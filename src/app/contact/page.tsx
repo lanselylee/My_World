@@ -1,10 +1,12 @@
 'use client';
+import emailjs from '@emailjs/browser';
+
+emailjs.init({ publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY! });
 
 import { Box, Container, Typography, TextField, Button, Alert, CircularProgress } from '@mui/material';
 import { Email, CheckCircle } from '@mui/icons-material';
 import { useState } from 'react';
 import Image from 'next/image';
-import emailjs from '@emailjs/browser';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -48,14 +50,18 @@ export default function ContactPage() {
 
       // 发送邮件
       await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_default',
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_default',
-        templateParams,
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'public_key_default'
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: `${formData.firstName} ${formData.lastName}`,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY! }
       );
-
+      
       setSubmitStatus('success');
-      setStatusMessage('消息发送成功！我会尽快回复您。');
+      setStatusMessage('Message sent successfully! I will reply to you as soon as possible!');
       
       // 清空表单
       setFormData({
@@ -68,7 +74,7 @@ export default function ContactPage() {
     } catch (error) {
       console.error('邮件发送失败:', error);
       setSubmitStatus('error');
-      setStatusMessage('发送失败，请稍后重试或直接发送邮件到 Li.xiaomen@northeastern.edu');
+      setStatusMessage('发送失败，请稍后重试或直接发送邮件到 lixiaomengus@gmail.com');
     } finally {
       setIsLoading(false);
     }
@@ -369,7 +375,7 @@ export default function ContactPage() {
                   fontWeight: 400,
                   letterSpacing: '0.3px'
                 }}>
-                  Li.xiaomen@northeastern.edu
+                  lixiaomengus@gmail.com
                 </Typography>
               </Box>
             </Box>

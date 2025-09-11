@@ -15,34 +15,15 @@ export default function LeetCodePage() {
     <Box sx={{
       minHeight: '100vh',
       background: `
-        radial-gradient(circle at 30% 70%, rgba(15, 15, 35, 0.8) 0%, transparent 50%),
-        radial-gradient(circle at 70% 30%, rgba(25, 25, 45, 0.6) 0%, transparent 50%),
-        linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)
+        radial-gradient(circle at 30% 70%, rgba(245, 245, 245, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, rgba(250, 250, 250, 0.4) 0%, transparent 50%),
+        linear-gradient(135deg, #ffffff 0%, #fafafa 100%)
       `,
       position: 'relative',
       overflow: 'hidden',
-      py: 8,
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: `
-          repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 255, 255, 0.05) 2px,
-            rgba(0, 255, 255, 0.05) 4px
-          )
-        `,
-        opacity: 0.4,
-        zIndex: 0
-      }
+      py: 8
     }}>
-      {/* 🔢 流动的代码背景 */}
+      {/* 🔢 Floating Geometric Elements */}
       <Box sx={{
         position: 'fixed',
         top: 0,
@@ -51,70 +32,69 @@ export default function LeetCodePage() {
         height: '100%',
         pointerEvents: 'none',
         zIndex: 0,
-        overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '200%',
-          height: '100%',
-          background: `
-            repeating-linear-gradient(
-              90deg,
-              transparent 0px,
-              rgba(100, 149, 237, 0.03) 1px,
-              rgba(100, 149, 237, 0.03) 2px,
-              transparent 3px,
-              transparent 50px
-            )
-          `,
-          animation: 'codeFlow 20s linear infinite',
-          '@keyframes codeFlow': {
-            '0%': { transform: 'translateX(-50%)' },
-            '100%': { transform: 'translateX(0%)' }
-          }
-        }
+        overflow: 'hidden'
       }}>
-        {/* 流动的代码文字背景 */}
-        {Array.from({ length: 12 }).map((_, i) => (
+        {/* Floating circles */}
+        {Array.from({ length: 8 }).map((_, i) => (
           <Box
-            key={`bg-code-${i}`}
+            key={`circle-${i}`}
             sx={{
               position: 'absolute',
-              left: `${(i * 15) % 120}%`,
-              top: `${(i * 8) % 100}%`,
-              fontSize: '12px',
+              left: `${(i * 12 + 5) % 90}%`,
+              top: `${(i * 15 + 10) % 80}%`,
+              width: `${60 + (i % 3) * 20}px`,
+              height: `${60 + (i % 3) * 20}px`,
+              borderRadius: '50%',
+              background: `linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)`,
+              border: `1px solid rgba(99, 102, 241, 0.2)`,
+              animation: `floatCircle ${10 + (i % 3) * 2}s ease-in-out infinite`,
+              animationDelay: `${i * 0.8}s`,
+              '@keyframes floatCircle': {
+                '0%, 100%': {
+                  transform: 'translateY(0px) translateX(0px) scale(1)',
+                  opacity: 0.6
+                },
+                '50%': {
+                  transform: `translateY(-${20 + i * 5}px) translateX(${10 - i * 2}px) scale(1.1)`,
+                  opacity: 0.8
+                }
+              }
+            }}
+          />
+        ))}
+        
+        {/* Floating code symbols */}
+        {Array.from({ length: 10 }).map((_, i) => (
+          <Box
+            key={`symbol-${i}`}
+            sx={{
+              position: 'absolute',
+              left: `${(i * 9 + 8) % 85}%`,
+              top: `${(i * 12 + 15) % 75}%`,
+              fontSize: { xs: '16px', md: '20px' },
               fontFamily: 'Monaco, Menlo, monospace',
-              color: 'rgba(0, 255, 255, 0.15)',
-              whiteSpace: 'nowrap',
-              animation: `bgCodeDrift ${15 + (i % 3) * 5}s linear infinite`,
-              animationDelay: `${i * 1.5}s`,
-              transform: 'rotate(-15deg)',
-              '@keyframes bgCodeDrift': {
-                '0%': {
-                  transform: 'translateX(-100px) translateY(-20px) rotate(-15deg)',
-                  opacity: 0
+              color: `rgba(75, 85, 99, ${0.3 + (i % 3) * 0.1})`,
+              fontWeight: 500,
+              animation: `symbolFloat ${8 + (i % 4) * 2}s ease-in-out infinite`,
+              animationDelay: `${i * 0.6}s`,
+              '@keyframes symbolFloat': {
+                '0%, 100%': {
+                  transform: 'translateY(0px) rotate(0deg)',
+                  opacity: 0.4
                 },
-                '10%': {
-                  opacity: 1
-                },
-                '90%': {
-                  opacity: 1
-                },
-                '100%': {
-                  transform: 'translateX(calc(100vw + 100px)) translateY(20px) rotate(-15deg)',
-                  opacity: 0
+                '50%': {
+                  transform: `translateY(-${15 + i * 3}px) rotate(${5 - i}deg)`,
+                  opacity: 0.7
                 }
               }
             }}
           >
-            {['const solve = (nums) =>', 'for (let i = 0; i < n; i++)', 'if (left < right)', 'return dp[n][target]', 'while (queue.length)', 'node.left = new TreeNode', 'map.set(key, value)', 'result.push(temp.slice())'][i % 8]}
+            {['{}', '[]', '()', '=>', '&&', '||', '++', '--', '??', '::'][i % 10]}
           </Box>
         ))}
       </Box>
 
-      {/* 💻 下落的代码行效果 */}
+      {/* ✨ Subtle Floating Code Snippets */}
       <Box sx={{
         position: 'fixed',
         top: 0,
@@ -124,104 +104,75 @@ export default function LeetCodePage() {
         pointerEvents: 'none',
         zIndex: 1
       }}>
-        {/* 代码行 */}
-        {isClient && Array.from({ length: 10 }).map((_, i) => (
+        {/* Floating algorithm keywords */}
+        {isClient && Array.from({ length: 6 }).map((_, i) => (
           <Box
-            key={i}
+            key={`keyword-${i}`}
             sx={{
               position: 'absolute',
-              left: `${(i * 9.5 + 5) % 95}%`,
-              top: '-50px',
-              fontSize: { xs: '10px', md: '12px' },
+              left: `${(i * 16 + 10) % 80}%`,
+              top: `${(i * 20 + 20) % 60}%`,
+              fontSize: { xs: '11px', md: '13px' },
               fontFamily: 'Monaco, Menlo, Consolas, monospace',
-              color: `rgba(0, 255, 255, ${0.7 + (i % 3) * 0.1})`,
+              color: `rgba(107, 114, 128, ${0.4 + (i % 2) * 0.2})`,
               whiteSpace: 'nowrap',
-              fontWeight: 500,
-              animationName: 'codeDrop',
-              animationDuration: `${3 + (i % 4)}s`,
-              animationIterationCount: 'infinite',
-              animationDelay: `${(i % 5)}s`,
-              animationTimingFunction: 'linear',
-              opacity: 0,
-              '@keyframes codeDrop': {
-                '0%': {
-                  transform: 'translateY(-50px)',
-                  opacity: 0
+              fontWeight: 400,
+              padding: '4px 8px',
+              background: 'rgba(249, 250, 251, 0.8)',
+              borderRadius: '12px',
+              border: '1px solid rgba(209, 213, 219, 0.5)',
+              animation: `gentleFloat ${12 + (i % 3) * 3}s ease-in-out infinite`,
+              animationDelay: `${i * 2}s`,
+              '@keyframes gentleFloat': {
+                '0%, 100%': {
+                  transform: 'translateY(0px) translateX(0px)',
+                  opacity: 0.6
                 },
-                '10%': {
-                  opacity: 0.8
-                },
-                '90%': {
-                  opacity: 0.8
-                },
-                '100%': {
-                  transform: 'translateY(100vh)',
-                  opacity: 0
+                '50%': {
+                  transform: `translateY(-${8 + i * 2}px) translateX(${3 - i}px)`,
+                  opacity: 0.9
                 }
               }
             }}
           >
             {[
-              'function binarySearch(arr, target)',
-              'let left = 0, right = arr.length - 1;',
-              'while (left <= right) {',
-              '  const mid = Math.floor((left + right) / 2);',
-              '  if (arr[mid] === target) return mid;',
-              '  else if (arr[mid] < target) left = mid + 1;',
-              '  else right = mid - 1;',
-              '}',
-              'return -1;',
-              'const result = quickSort(array);',
-              'dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-w] + v);',
-              'graph[u].push(v);',
-              'visited[node] = true;',
-              'queue.push([x, y, dist + 1]);',
-              'if (memo.has(key)) return memo.get(key);'
-            ][i % 15]}
+              'O(log n)',
+              'Binary Search',
+              'Dynamic Programming', 
+              'BFS',
+              'DFS',
+              'Two Pointers'
+            ][i % 6]}
           </Box>
         ))}
         
-        {/* 数字矩阵雨效果 */}
-        {isClient && Array.from({ length: 15 }).map((_, i) => (
+        {/* Floating geometric shapes */}
+        {isClient && Array.from({ length: 8 }).map((_, i) => (
           <Box
-            key={`matrix-${i}`}
+            key={`shape-${i}`}
             sx={{
               position: 'absolute',
-              left: `${(i * 6.67) % 100}%`,
-              top: '-30px',
-              fontSize: '14px',
-              fontFamily: 'Monaco, Menlo, monospace',
-              color: `rgba(0, 255, 0, ${0.3 + (i % 4) * 0.1})`,
-              fontWeight: 600,
-              animationName: 'matrixRain',
-              animationDuration: `${2 + (i % 3)}s`,
-              animationIterationCount: 'infinite',
-              animationDelay: `${(i % 3)}s`,
-              animationTimingFunction: 'linear',
-              opacity: 0,
-              '@keyframes matrixRain': {
-                '0%': {
-                  transform: 'translateY(-30px)',
-                  opacity: 0
+              left: `${(i * 11 + 15) % 85}%`,
+              top: `${(i * 18 + 25) % 70}%`,
+              width: `${12 + (i % 2) * 4}px`,
+              height: `${12 + (i % 2) * 4}px`,
+              borderRadius: i % 3 === 0 ? '50%' : '2px',
+              background: `rgba(${i % 2 === 0 ? '99, 102, 241' : '139, 92, 246'}, 0.15)`,
+              border: `1px solid rgba(${i % 2 === 0 ? '99, 102, 241' : '139, 92, 246'}, 0.3)`,
+              animation: `shapeFloat ${10 + (i % 4) * 2}s ease-in-out infinite`,
+              animationDelay: `${i * 1.5}s`,
+              '@keyframes shapeFloat': {
+                '0%, 100%': {
+                  transform: 'translateY(0px) rotate(0deg)',
+                  opacity: 0.5
                 },
-                '15%': {
-                  opacity: 1
-                },
-                '85%': {
-                  opacity: 1
-                },
-                '100%': {
-                  transform: 'translateY(100vh)',
-                  opacity: 0
+                '50%': {
+                  transform: `translateY(-${12 + i * 2}px) rotate(${45 * (i % 2 === 0 ? 1 : -1)}deg)`,
+                  opacity: 0.8
                 }
               }
             }}
-          >
-            {i % 2 === 0 ? 
-              String(i % 2) : 
-              ['0', '1', '{', '}', '[', ']', '(', ')', ';', '='][i % 10]
-            }
-          </Box>
+          />
         ))}
       </Box>
 
@@ -234,11 +185,10 @@ export default function LeetCodePage() {
             textAlign: 'center',
             fontWeight: 300,
             fontSize: { xs: '2.5rem', md: '3.5rem' },
-            color: '#00ffff',
-            letterSpacing: '0.15em',
+            color: '#2c2c2c',
+            letterSpacing: '0.05em',
             mb: 2,
-            fontFamily: '"Inter", "Helvetica", sans-serif',
-            textShadow: '0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3)'
+            fontFamily: '"Inter", "Helvetica", sans-serif'
           }}
         >
           LeetCode Journey
@@ -249,11 +199,10 @@ export default function LeetCodePage() {
           variant="h6"
           sx={{
             textAlign: 'center',
-            color: '#a0a0a0',
+            color: '#6c6c6c',
             fontWeight: 300,
             mb: 8,
-            fontSize: { xs: '1rem', md: '1.1rem' },
-            textShadow: '0 0 5px rgba(160, 160, 160, 0.3)'
+            fontSize: { xs: '1rem', md: '1.1rem' }
           }}
         >
           My coding adventure and problem-solving journey 💻
@@ -269,15 +218,15 @@ export default function LeetCodePage() {
           <Card sx={{
             height: '200px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #0f3460 0%, #0e4b99 100%)',
-            color: '#00ffff',
-            border: '1px solid rgba(0, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            color: '#1e293b',
+            border: '1px solid rgba(226, 232, 240, 0.8)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
             transition: 'all 0.3s ease',
             '&:hover': {
-              transform: 'translateY(-8px)',
-              boxShadow: '0 12px 40px rgba(0, 255, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-              border: '1px solid rgba(0, 255, 255, 0.4)'
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
+              border: '1px solid rgba(99, 102, 241, 0.3)'
             }
           }}>
             <CardContent sx={{ 
@@ -287,11 +236,11 @@ export default function LeetCodePage() {
               justifyContent: 'center', 
               alignItems: 'center' 
             }}>
-              <Code sx={{ fontSize: '3rem', mb: 2 }} />
-              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+              <Code sx={{ fontSize: '3rem', mb: 2, color: '#6366f1' }} />
+              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1, color: '#1e293b' }}>
                 150+
               </Typography>
-              <Typography variant="body1" sx={{ textAlign: 'center' }}>
+              <Typography variant="body1" sx={{ textAlign: 'center', color: '#64748b' }}>
                 Problems Solved
               </Typography>
             </CardContent>
@@ -300,15 +249,15 @@ export default function LeetCodePage() {
           <Card sx={{
             height: '200px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #4a0e4e 0%, #81126d 100%)',
-            color: '#ff6ec7',
-            border: '1px solid rgba(255, 110, 199, 0.2)',
-            boxShadow: '0 8px 32px rgba(255, 110, 199, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            color: '#1e293b',
+            border: '1px solid rgba(226, 232, 240, 0.8)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
             transition: 'all 0.3s ease',
             '&:hover': {
-              transform: 'translateY(-8px)',
-              boxShadow: '0 12px 40px rgba(255, 110, 199, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-              border: '1px solid rgba(255, 110, 199, 0.4)'
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
+              border: '1px solid rgba(236, 72, 153, 0.3)'
             }
           }}>
             <CardContent sx={{ 
@@ -318,11 +267,11 @@ export default function LeetCodePage() {
               justifyContent: 'center', 
               alignItems: 'center' 
             }}>
-              <TrendingUp sx={{ fontSize: '3rem', mb: 2 }} />
-              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+              <TrendingUp sx={{ fontSize: '3rem', mb: 2, color: '#ec4899' }} />
+              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1, color: '#1e293b' }}>
                 Medium
               </Typography>
-              <Typography variant="body1" sx={{ textAlign: 'center' }}>
+              <Typography variant="body1" sx={{ textAlign: 'center', color: '#64748b' }}>
                 Current Level
               </Typography>
             </CardContent>
@@ -331,15 +280,15 @@ export default function LeetCodePage() {
           <Card sx={{
             height: '200px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #0f4c75 0%, #00a8cc 100%)',
-            color: '#00e6ff',
-            border: '1px solid rgba(0, 230, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 230, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            color: '#1e293b',
+            border: '1px solid rgba(226, 232, 240, 0.8)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
             transition: 'all 0.3s ease',
             '&:hover': {
-              transform: 'translateY(-8px)',
-              boxShadow: '0 12px 40px rgba(0, 230, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-              border: '1px solid rgba(0, 230, 255, 0.4)'
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
+              border: '1px solid rgba(14, 165, 233, 0.3)'
             }
           }}>
             <CardContent sx={{ 
@@ -349,11 +298,11 @@ export default function LeetCodePage() {
               justifyContent: 'center', 
               alignItems: 'center' 
             }}>
-              <Star sx={{ fontSize: '3rem', mb: 2 }} />
-              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+              <Star sx={{ fontSize: '3rem', mb: 2, color: '#0ea5e9' }} />
+              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1, color: '#1e293b' }}>
                 6 Months
               </Typography>
-              <Typography variant="body1" sx={{ textAlign: 'center' }}>
+              <Typography variant="body1" sx={{ textAlign: 'center', color: '#64748b' }}>
                 Journey Started
               </Typography>
             </CardContent>
@@ -362,25 +311,24 @@ export default function LeetCodePage() {
 
         {/* 内容区域 */}
         <Box sx={{
-          background: 'rgba(10, 15, 25, 0.85)',
-          border: '1px solid rgba(0, 255, 255, 0.2)',
+          background: 'rgba(255, 255, 255, 0.9)',
+          border: '1px solid rgba(226, 232, 240, 0.8)',
           borderRadius: '20px',
           padding: 4,
-          boxShadow: '0 8px 32px rgba(0, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04)',
           backdropFilter: 'blur(15px)'
         }}>
           <Typography variant="h4" sx={{ 
-            color: '#00ffff', 
+            color: '#1e293b', 
             fontWeight: 500, 
             mb: 3,
-            textAlign: 'center',
-            textShadow: '0 0 10px rgba(0, 255, 255, 0.3)'
+            textAlign: 'center'
           }}>
             My Coding Philosophy
           </Typography>
           
           <Typography variant="body1" sx={{ 
-            color: '#b0b0b0', 
+            color: '#475569', 
             lineHeight: 1.8,
             fontSize: '1.1rem',
             textAlign: 'center',
@@ -394,10 +342,9 @@ export default function LeetCodePage() {
 
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <Typography variant="h5" sx={{ 
-              color: '#00e6ff', 
+              color: '#374151', 
               fontWeight: 500, 
-              mb: 2,
-              textShadow: '0 0 5px rgba(0, 230, 255, 0.3)'
+              mb: 2
             }}>
               Current Focus Areas
             </Typography>
@@ -407,21 +354,28 @@ export default function LeetCodePage() {
               justifyContent: 'center', 
               gap: 2 
             }}>
-              {['Dynamic Programming', 'Tree Traversal', 'Graph Algorithms', 'Binary Search'].map((topic) => (
+              {['Dynamic Programming', 'Tree Traversal', 'Graph Algorithms', 'Binary Search'].map((topic, index) => (
                 <Box key={topic} sx={{
-                  background: 'linear-gradient(135deg, #0f3460 0%, #0e4b99 100%)',
-                  color: '#00ffff',
-                  border: '1px solid rgba(0, 255, 255, 0.3)',
+                  background: `linear-gradient(135deg, ${
+                    index % 4 === 0 ? '#6366f1' : 
+                    index % 4 === 1 ? '#ec4899' : 
+                    index % 4 === 2 ? '#0ea5e9' : '#10b981'
+                  } 0%, ${
+                    index % 4 === 0 ? '#8b5cf6' : 
+                    index % 4 === 1 ? '#f472b6' : 
+                    index % 4 === 2 ? '#38bdf8' : '#34d399'
+                  } 100%)`,
+                  color: '#ffffff',
+                  border: 'none',
                   padding: '8px 16px',
                   borderRadius: '20px',
                   fontSize: '0.9rem',
                   fontWeight: 500,
-                  boxShadow: '0 2px 8px rgba(0, 255, 255, 0.2)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'translateY(-2px)',
-                    boxShadow: '0 4px 12px rgba(0, 255, 255, 0.3)',
-                    border: '1px solid rgba(0, 255, 255, 0.5)'
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
                   }
                 }}>
                   {topic}

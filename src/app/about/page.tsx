@@ -1,428 +1,449 @@
 'use client';
 
-import { Box, Container, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Image from 'next/image';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Snackbar, Typography } from '@mui/material';
+import { ArticleOutlined, ContentCopy, GitHub, LinkedIn, MailOutline, OpenInNew } from '@mui/icons-material';
+
+const emailAddress = 'li.xiaomen@northeastern.edu';
+
+const proofPoints = [
+  {
+    label: 'Current',
+    title: 'M.S. Computer Science',
+    body: 'Northeastern University, Seattle. Building toward SDE roles across full-stack, AI tooling, and developer experience.',
+  },
+  {
+    label: 'Engineering',
+    title: 'AI testing startup',
+    body: 'Working on AI-powered testing workflows, product analytics, report generation, collaboration features, and automation for developer-facing QA systems.',
+  },
+  {
+    label: 'Difference',
+    title: 'Escape-room designer',
+    body: 'Spent two years in Beijing creating original horror-room themes, puzzle flow, player journeys, and market storytelling for a venue that reached national hot rankings and Beijing No. 1.',
+  },
+];
+
+const stack = [
+  ['Frontend', 'React, Next.js, TypeScript, Material UI, responsive UI'],
+  ['Backend', 'Python, Java, REST APIs, AWS Lambda, data workflows'],
+  ['AI tools', 'LLM workflows, MCP integrations, Claude Code, Codex, browser automation'],
+  ['Product sense', 'Puzzle logic, user flow, feedback loops, storytelling, iteration'],
+];
+
+const focusAreas = [
+  'Full-stack software engineering',
+  'AI-native developer tools',
+  'Testing automation and observability',
+  'Interactive web experiences',
+];
 
 export default function AboutPage() {
-  const router = useRouter();
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [copiedOpen, setCopiedOpen] = useState(false);
 
-  const handleNavigation = (path: string) => {
-    router.push(path as any);
+  const copyEmail = async () => {
+    await navigator.clipboard.writeText(emailAddress);
+    setCopiedOpen(true);
   };
 
   return (
     <Box sx={{
       minHeight: '100vh',
-      background: `
-        radial-gradient(circle at 30% 70%, rgba(245, 245, 245, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 70% 30%, rgba(250, 250, 250, 0.4) 0%, transparent 50%),
-        linear-gradient(135deg, #ffffff 0%, #fafafa 100%)
-      `, // 白色简约背景 - 与首页和my-work保持一致
-
+      bgcolor: '#fffdf8',
+      color: '#171511',
       position: 'relative',
       overflow: 'hidden',
-      py: 8, // 上下内边距
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        background: `
-          repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.02) 2px,
-            rgba(0, 0, 0, 0.02) 4px
-          )
-        `, // 轻微的纸质纹理
-        opacity: 0.3,
-        zIndex: 0
-      },
-
+      px: { xs: 2.5, sm: 5, md: 8 },
+      py: { xs: 5.5, md: 8 },
+      backgroundImage: `
+        linear-gradient(180deg, rgba(255,253,248,0.98), rgba(248,245,238,0.96)),
+        repeating-linear-gradient(90deg, rgba(20,18,16,0.025) 0, rgba(20,18,16,0.025) 1px, transparent 1px, transparent 96px)
+      `,
     }}>
-      {/* Swimming Blue Jellyfish */}
       <Box sx={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 1
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', md: '0.88fr 1.12fr' },
+        gap: { xs: 4, md: 7 },
+        alignItems: 'center',
+        minHeight: { md: '72vh' },
+        mb: { xs: 5.5, md: 7.5 },
       }}>
-        {/* Large Jellyfish */}
-        {[...Array(15)].map((_, i) => (
-          <Box
-            key={i}
-            sx={{
-              position: 'absolute',
-              left: `${(i * 8 + 15) % 85}%`,
-              top: '-30px',
-              width: '20px',
-              height: '16px',
-              background: `radial-gradient(ellipse at 50% 20%, 
-                rgba(65, 105, 225, 0.9), 
-                rgba(135, 206, 250, 0.7),
-                rgba(173, 216, 230, 0.5)
-              )`,
-              borderRadius: '50% 50% 50% 50% / 80% 80% 20% 20%',
-              animation: `jellyFloat ${5 + i}s ease-in-out infinite`,
-              animationDelay: `${i * 0.8}s`,
-              '@keyframes jellyFloat': {
-                '0%': { 
-                  transform: 'translateY(-30px) translateX(0px) scale(1)',
-                  opacity: 0
-                },
-                '10%': { 
-                  opacity: 0.9,
-                  transform: 'translateY(10vh) translateX(5px) scale(1.1)'
-                },
-                '30%': { 
-                  transform: 'translateY(30vh) translateX(-5px) scale(1)'
-                },
-                '50%': { 
-                  opacity: 1,
-                  transform: 'translateY(50vh) translateX(8px) scale(1.05)'
-                },
-                '70%': { 
-                  transform: 'translateY(70vh) translateX(-3px) scale(0.95)'
-                },
-                '90%': { 
-                  opacity: 0.8,
-                  transform: 'translateY(90vh) translateX(2px) scale(0.9)'
-                },
-                '100%': { 
-                  transform: 'translateY(100vh) translateX(0px) scale(0.8)',
-                  opacity: 0
-                }
+        <Box sx={{
+          maxWidth: 620,
+          order: { xs: 1, md: 1 },
+          pl: { md: 1 },
+        }}>
+          <Typography sx={{
+            color: '#777067',
+            fontSize: '0.78rem',
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            mb: 1.4,
+          }}>
+            Profile for SDE roles
+          </Typography>
+
+          <Typography component="h1" sx={{
+            color: '#111',
+            fontSize: { xs: '2.25rem', sm: '2.75rem', md: '3.45rem' },
+            fontWeight: 300,
+            lineHeight: 1.08,
+            letterSpacing: { xs: '0.035em', md: '0.055em' },
+            textTransform: 'uppercase',
+            mb: { xs: 2, md: 2.5 },
+          }}>
+            Builder with
+            <br />
+            system sense
+          </Typography>
+
+          <Typography sx={{
+            color: '#5d5750',
+            fontSize: { xs: '0.98rem', md: '1.05rem' },
+            lineHeight: { xs: 1.75, md: 1.86 },
+            fontWeight: 300,
+            maxWidth: 560,
+            mb: { xs: 2.4, md: 3 },
+          }}>
+            I am a software engineer in training who likes turning messy human workflows into clear, testable systems. My path runs from horror-room storytelling and puzzle design to AI testing tools, web products, and developer workflows.
+          </Typography>
+
+          <Box sx={{
+            borderTop: '1px solid rgba(23,21,17,0.14)',
+            borderBottom: '1px solid rgba(23,21,17,0.14)',
+            py: 1.8,
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+            gap: { xs: 1.1, sm: 1.35 },
+            mb: { xs: 2.5, md: 3.2 },
+            maxWidth: 600,
+          }}>
+            {focusAreas.map((area) => (
+              <Typography
+                key={area}
+                sx={{
+                  color: '#36312b',
+                  fontSize: '0.9rem',
+                  lineHeight: 1.45,
+                  fontWeight: 300,
+                }}
+              >
+                {area}
+              </Typography>
+            ))}
+          </Box>
+
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.1 }}>
+            <Button
+              href="/Xiaomeng_Li_Resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              variant="outlined"
+              startIcon={<ArticleOutlined />}
+              sx={{
+                color: '#171511',
+                borderColor: 'rgba(23,21,17,0.32)',
+                borderRadius: 0,
+                textTransform: 'none',
+                px: 2,
+                py: 1,
+                fontWeight: 400,
+                '&:hover': { borderColor: '#171511', bgcolor: 'rgba(23,21,17,0.04)' },
+              }}
+            >
+              resume
+            </Button>
+            <Button
+              onClick={() => setEmailDialogOpen(true)}
+              variant="text"
+              startIcon={<MailOutline />}
+              sx={{
+                color: '#171511',
+                borderRadius: 0,
+                textTransform: 'none',
+                px: 0.5,
+                py: 1,
+                fontWeight: 400,
+                '&:hover': { bgcolor: 'transparent', color: '#6b1f1f' },
+              }}
+            >
+              email
+            </Button>
+            <Button
+              href="https://github.com/lanselylee"
+              target="_blank"
+              rel="noreferrer"
+              variant="text"
+              startIcon={<GitHub />}
+              sx={{
+                color: '#171511',
+                borderRadius: 0,
+                textTransform: 'none',
+                px: 0.5,
+                py: 1,
+                fontWeight: 400,
+                '&:hover': { bgcolor: 'transparent', color: '#6b1f1f' },
+              }}
+            >
+              GitHub
+            </Button>
+            <Button
+              href="https://www.linkedin.com/in/xiaomeng-li-70730a331/"
+              target="_blank"
+              rel="noreferrer"
+              variant="text"
+              startIcon={<LinkedIn />}
+              sx={{
+                color: '#171511',
+                borderRadius: 0,
+                textTransform: 'none',
+                px: 0.5,
+                py: 1,
+                fontWeight: 400,
+                '&:hover': { bgcolor: 'transparent', color: '#6b1f1f' },
+              }}
+            >
+              LinkedIn
+            </Button>
+          </Box>
+
+          <Dialog
+            open={emailDialogOpen}
+            onClose={() => setEmailDialogOpen(false)}
+            maxWidth="xs"
+            fullWidth
+            PaperProps={{
+              sx: {
+                borderRadius: 0,
+                bgcolor: '#fffdf8',
+                border: '1px solid rgba(23,21,17,0.16)',
+                boxShadow: '0 18px 48px rgba(23,21,17,0.16)',
               },
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                bottom: '-8px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '3px',
-                height: '12px',
-                background: `linear-gradient(to bottom, 
-                  rgba(135, 206, 250, 0.8), 
-                  rgba(135, 206, 250, 0.3)
-                )`,
-                borderRadius: '1.5px',
-                animation: 'tentacleWave 2s ease-in-out infinite alternate'
-              },
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                bottom: '-8px',
-                left: '30%',
-                transform: 'translateX(-50%)',
-                width: '2px',
-                height: '10px',
-                background: `linear-gradient(to bottom, 
-                  rgba(135, 206, 250, 0.6), 
-                  rgba(135, 206, 250, 0.2)
-                )`,
-                borderRadius: '1px',
-                animation: 'tentacleWave 2.5s ease-in-out infinite alternate-reverse'
-              },
-              '@keyframes tentacleWave': {
-                '0%': { transform: 'translateX(-50%) rotate(-2deg)' },
-                '100%': { transform: 'translateX(-50%) rotate(2deg)' }
-              }
             }}
+          >
+            <DialogTitle sx={{
+              color: '#171511',
+              fontWeight: 300,
+              fontSize: '1.35rem',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              pb: 1,
+            }}>
+              Contact Xiaomeng
+            </DialogTitle>
+            <DialogContent sx={{ pt: 0, pb: 3 }}>
+              <Typography sx={{
+                color: '#6b645b',
+                fontSize: '0.92rem',
+                lineHeight: 1.7,
+                fontWeight: 300,
+                mb: 1.8,
+              }}>
+                Copy my email, or open your default mail app if you prefer sending directly.
+              </Typography>
+              <Box sx={{
+                borderTop: '1px solid rgba(23,21,17,0.14)',
+                borderBottom: '1px solid rgba(23,21,17,0.14)',
+                py: 1.5,
+                mb: 2,
+              }}>
+                <Typography sx={{
+                  color: '#171511',
+                  fontSize: { xs: '0.95rem', sm: '1rem' },
+                  lineHeight: 1.5,
+                  wordBreak: 'break-all',
+                  fontWeight: 300,
+                }}>
+                  {emailAddress}
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.1 }}>
+                <Button
+                  onClick={copyEmail}
+                  variant="outlined"
+                  startIcon={<ContentCopy />}
+                  sx={{
+                    color: '#171511',
+                    borderColor: 'rgba(23,21,17,0.32)',
+                    borderRadius: 0,
+                    textTransform: 'none',
+                    px: 2,
+                    py: 1,
+                    fontWeight: 400,
+                    '&:hover': { borderColor: '#171511', bgcolor: 'rgba(23,21,17,0.04)' },
+                  }}
+                >
+                  copy email
+                </Button>
+                <Button
+                  href={`mailto:${emailAddress}`}
+                  startIcon={<OpenInNew />}
+                  sx={{
+                    color: '#171511',
+                    borderRadius: 0,
+                    textTransform: 'none',
+                    px: 0.5,
+                    py: 1,
+                    fontWeight: 400,
+                    '&:hover': { bgcolor: 'transparent', color: '#6b1f1f' },
+                  }}
+                >
+                  open mail app
+                </Button>
+              </Box>
+            </DialogContent>
+          </Dialog>
+
+          <Snackbar
+            open={copiedOpen}
+            autoHideDuration={2200}
+            onClose={() => setCopiedOpen(false)}
+            message="Email copied"
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           />
-        ))}
-        
-        {/* Small Jellyfish */}
-        {[...Array(25)].map((_, i) => (
-          <Box
-            key={`small-${i}`}
-            sx={{
-              position: 'absolute',
-              left: `${(i * 6 + 8) % 88}%`,
-              top: '-15px',
-              width: '12px',
-              height: '9px',
-              background: `radial-gradient(ellipse at 50% 25%, 
-                rgba(100, 149, 237, 0.8), 
-                rgba(176, 196, 222, 0.6),
-                rgba(230, 230, 250, 0.4)
-              )`,
-              borderRadius: '50% 50% 50% 50% / 75% 75% 25% 25%',
-              animation: `smallJellyFloat ${7 + i * 0.5}s ease-in-out infinite`,
-              animationDelay: `${i * 0.6}s`,
-              '@keyframes smallJellyFloat': {
-                '0%': { 
-                  transform: 'translateY(-15px) translateX(0px) scale(0.8)',
-                  opacity: 0
-                },
-                '15%': { 
-                  opacity: 0.7,
-                  transform: 'translateY(15vh) translateX(3px) scale(1.1)'
-                },
-                '35%': { 
-                  transform: 'translateY(35vh) translateX(-3px) scale(1)'
-                },
-                '50%': { 
-                  opacity: 0.9,
-                  transform: 'translateY(50vh) translateX(5px) scale(1.05)'
-                },
-                '65%': { 
-                  transform: 'translateY(65vh) translateX(-2px) scale(0.95)'
-                },
-                '85%': { 
-                  opacity: 0.6,
-                  transform: 'translateY(85vh) translateX(1px) scale(0.9)'
-                },
-                '100%': { 
-                  transform: 'translateY(100vh) translateX(0px) scale(0.7)',
-                  opacity: 0
-                }
-              },
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                bottom: '-5px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '2px',
-                height: '6px',
-                background: `linear-gradient(to bottom, 
-                  rgba(176, 196, 222, 0.7), 
-                  rgba(176, 196, 222, 0.2)
-                )`,
-                borderRadius: '1px',
-                animation: 'smallTentacleWave 1.8s ease-in-out infinite alternate'
-              },
-              '@keyframes smallTentacleWave': {
-                '0%': { transform: 'translateX(-50%) rotate(-1deg)' },
-                '100%': { transform: 'translateX(-50%) rotate(1deg)' }
-              }
+        </Box>
+
+        <Box sx={{
+          position: 'relative',
+          minHeight: { xs: 250, sm: 350, md: 590 },
+          maxWidth: { xs: 340, sm: 480, md: 'none' },
+          width: '100%',
+          mx: { xs: 'auto', md: 0 },
+          order: { xs: 2, md: 2 },
+          overflow: 'hidden',
+          '& img': {
+            transform: { xs: 'scale(1.12) translateY(-4px)', sm: 'scale(1.08) translateY(-4px)', md: 'none' },
+          },
+        }}>
+          <Image
+            src="/cartoon6.PNG"
+            alt="Illustration for Xiaomeng's profile"
+            fill
+            sizes="(max-width: 900px) 100vw, 52vw"
+            style={{
+              objectFit: 'contain',
+              objectPosition: 'center center',
+              mixBlendMode: 'multiply',
             }}
+            priority
           />
+        </Box>
+      </Box>
+
+      <Box sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', md: 'repeat(3, minmax(0, 1fr))' },
+        gap: { xs: 1.6, md: 2 },
+        mb: { xs: 5.5, md: 7 },
+      }}>
+        {proofPoints.map((item, index) => (
+          <Box
+            key={item.label}
+            sx={{
+              border: '1px solid rgba(23,21,17,0.14)',
+              bgcolor: 'rgba(255,255,255,0.66)',
+              p: { xs: 2.1, md: 2.35 },
+              minHeight: { md: 245 },
+            }}
+          >
+            <Typography sx={{
+              color: '#9b9286',
+              fontSize: '0.72rem',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              mb: 1.2,
+            }}>
+              0{index + 1} / {item.label}
+            </Typography>
+            <Typography sx={{
+              color: '#171511',
+              fontSize: { xs: '1.12rem', md: '1.2rem' },
+              fontWeight: 300,
+              letterSpacing: '0.03em',
+              mb: 1.25,
+            }}>
+              {item.title}
+            </Typography>
+            <Typography sx={{
+              color: '#655f57',
+              fontSize: '0.9rem',
+              lineHeight: 1.72,
+              fontWeight: 300,
+            }}>
+              {item.body}
+            </Typography>
+          </Box>
         ))}
       </Box>
 
-      {/* 🎨 主要内容 */}
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 2 }}>
-        {/* 页面标题 */}
-        <Typography
-          variant="h2"
-          component="h1"
-          sx={{
-            textAlign: 'center',
+      <Box sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', md: '0.82fr 1.18fr' },
+        gap: { xs: 2.5, md: 6 },
+        alignItems: 'start',
+        borderTop: '1px solid rgba(23,21,17,0.14)',
+        pt: { xs: 3, md: 4 },
+      }}>
+        <Box>
+          <Typography sx={{
+            color: '#171511',
+            fontSize: { xs: '1.35rem', md: '1.6rem' },
             fontWeight: 300,
-            fontSize: { xs: '2.5rem', md: '3.5rem' },
-            color: '#2c2c2c', // 深色文字适应白色背景
-            letterSpacing: '0.15em',
-            mb: 2,
-            fontFamily: '"Inter", "Helvetica", sans-serif',
-            textShadow: '1px 1px 2px rgba(255,255,255,0.8)' // 轻微的白色阴影
-          }}
-        >
-          About Me
-        </Typography>
-
-        {/* 副标题 */}
-        <Typography
-          variant="h6"
-          sx={{
-            textAlign: 'center',
-            color: '#6c6c6c', // 中性灰色适应白色背景
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            mb: 1.4,
+          }}>
+            What I bring
+          </Typography>
+          <Typography sx={{
+            color: '#655f57',
+            fontSize: '0.98rem',
+            lineHeight: 1.8,
             fontWeight: 300,
-            mb: 8,
-            fontSize: { xs: '1rem', md: '1.1rem' },
-            textShadow: '1px 1px 2px rgba(255,255,255,0.6)'
-          }}
-        >
-          Explore my journey through code, stories, and dreams ✨
-        </Typography>
+            maxWidth: 430,
+          }}>
+            I am strongest where engineering meets product judgment: making unclear workflows visible, designing useful interactions, and iterating from real user behavior.
+          </Typography>
+        </Box>
 
-        {/* 🖼️ 三张背景图片水平排列 */}
         <Box sx={{
           display: 'grid',
-          gridTemplateColumns: { 
-            xs: '1fr',           // 手机端：单列
-            md: 'repeat(3, 1fr)' // 桌面端：三列
-          },
-          gap: 3,                // 图片间距
-          mt: 6,
-          px: 2                  // 左右边距
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' },
+          gap: 1.2,
         }}>
-          
-          {/* 💻 第一张图片 - LeetCode Journey */}
-          <Box 
-            onClick={() => handleNavigation('/leetcode')}
-            sx={{
-              position: 'relative',
-              height: { xs: '300px', md: '400px' },
-              borderRadius: '16px',
-              overflow: 'hidden',
-              backgroundImage: 'url(/cartoon3.jpeg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-              '&:hover': {
-                transform: 'translateY(-8px) scale(1.02)',
-                boxShadow: '0 16px 48px rgba(0,0,0,0.25)',
-                '& .floating-button': {
-                  transform: 'translateY(-5px)',
-                  backgroundColor: 'rgba(255,255,255,0.95)'
-                }
-              }
-            }}>
-            {/* 悬浮按钮 */}
-            <Box 
-              className="floating-button"
+          {stack.map(([label, body]) => (
+            <Box
+              key={label}
               sx={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: 'rgba(255,255,255,0.9)',
-                backdropFilter: 'blur(10px)',
-                padding: '12px 24px',
-                borderRadius: '25px',
-                border: '1px solid rgba(255,255,255,0.3)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,1)',
-                  transform: 'translateX(-50%) translateY(-2px)',
-                  boxShadow: '0 6px 25px rgba(0,0,0,0.2)'
-                }
+                border: '1px solid rgba(23,21,17,0.12)',
+                bgcolor: 'rgba(255,255,255,0.5)',
+                px: 1.6,
+                py: 1.35,
               }}
             >
               <Typography sx={{
-                color: '#2c2c2c',
-                fontWeight: 600,
-                fontSize: { xs: '0.9rem', md: '1rem' },
-                letterSpacing: '0.5px'
+                color: '#9b9286',
+                fontSize: '0.68rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                mb: 0.65,
               }}>
-                LeetCode Journey
+                {label}
               </Typography>
-            </Box>
-          </Box>
-
-          {/* 📚 第二张图片 - My Stories */}
-          <Box 
-            onClick={() => handleNavigation('/stories')}
-            sx={{
-              position: 'relative',
-              height: { xs: '300px', md: '400px' },
-              borderRadius: '16px',
-              overflow: 'hidden',
-              backgroundImage: 'url(/cartoon4.jpeg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-              '&:hover': {
-                transform: 'translateY(-8px) scale(1.02)',
-                boxShadow: '0 16px 48px rgba(0,0,0,0.25)',
-                '& .floating-button': {
-                  transform: 'translateY(-5px)',
-                  backgroundColor: 'rgba(255,255,255,0.95)'
-                }
-              }
-            }}>
-            {/* 悬浮按钮 */}
-            <Box 
-              className="floating-button"
-              sx={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: 'rgba(255,255,255,0.9)',
-                backdropFilter: 'blur(10px)',
-                padding: '12px 24px',
-                borderRadius: '25px',
-                border: '1px solid rgba(255,255,255,0.3)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,1)',
-                  transform: 'translateX(-50%) translateY(-2px)',
-                  boxShadow: '0 6px 25px rgba(0,0,0,0.2)'
-                }
-              }}
-            >
               <Typography sx={{
-                color: '#2c2c2c',
-                fontWeight: 600,
-                fontSize: { xs: '0.9rem', md: '1rem' },
-                letterSpacing: '0.5px'
+                color: '#2a251f',
+                fontSize: '0.88rem',
+                lineHeight: 1.55,
+                fontWeight: 300,
               }}>
-                My Stories
+                {body}
               </Typography>
             </Box>
-          </Box>
-
-          {/* 🌙 第三张图片 - My Dreams */}
-          <Box 
-            onClick={() => handleNavigation('/dreams')}
-            sx={{
-              position: 'relative',
-              height: { xs: '300px', md: '400px' },
-              borderRadius: '16px',
-              overflow: 'hidden',
-              backgroundImage: 'url(/cartoon5.jpeg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-              '&:hover': {
-                transform: 'translateY(-8px) scale(1.02)',
-                boxShadow: '0 16px 48px rgba(0,0,0,0.25)',
-                '& .floating-button': {
-                  transform: 'translateY(-5px)',
-                  backgroundColor: 'rgba(255,255,255,0.95)'
-                }
-              }
-            }}>
-            {/* 悬浮按钮 */}
-            <Box 
-              className="floating-button"
-              sx={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: 'rgba(255,255,255,0.9)',
-                backdropFilter: 'blur(10px)',
-                padding: '12px 24px',
-                borderRadius: '25px',
-                border: '1px solid rgba(255,255,255,0.3)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,1)',
-                  transform: 'translateX(-50%) translateY(-2px)',
-                  boxShadow: '0 6px 25px rgba(0,0,0,0.2)'
-                }
-              }}
-            >
-              <Typography sx={{
-                color: '#2c2c2c',
-                fontWeight: 600,
-                fontSize: { xs: '0.9rem', md: '1rem' },
-                letterSpacing: '0.5px'
-              }}>
-                My Dreams
-              </Typography>
-            </Box>
-          </Box>
+          ))}
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 }

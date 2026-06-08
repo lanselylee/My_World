@@ -1,11 +1,19 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { Box, Button, Container, Typography } from '@mui/material';
-import { ArrowForward } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 
-const whispers = ['AI Testing', 'Code', 'Stories', 'Dreams'];
+const raindrops = [
+  { left: '7%', delay: '0s', duration: '6.2s', height: 12, opacity: 0.08 },
+  { left: '15%', delay: '2.1s', duration: '7.1s', height: 9, opacity: 0.07 },
+  { left: '24%', delay: '1.2s', duration: '6.7s', height: 13, opacity: 0.08 },
+  { left: '36%', delay: '3.4s', duration: '7.8s', height: 10, opacity: 0.06 },
+  { left: '49%', delay: '0.8s', duration: '7.2s', height: 14, opacity: 0.07 },
+  { left: '62%', delay: '2.7s', duration: '6.5s', height: 10, opacity: 0.07 },
+  { left: '73%', delay: '1.6s', duration: '8s', height: 12, opacity: 0.08 },
+  { left: '83%', delay: '3.1s', duration: '6.9s', height: 8, opacity: 0.06 },
+  { left: '92%', delay: '0.4s', duration: '7.4s', height: 13, opacity: 0.07 },
+];
 
 export default function Home() {
   return (
@@ -14,127 +22,90 @@ export default function Home() {
       bgcolor: '#fffefe',
       position: 'relative',
       overflow: 'hidden',
+      '@keyframes rainFall': {
+        '0%': { transform: 'translateY(-40px)', opacity: 0 },
+        '16%': { opacity: 1 },
+        '84%': { opacity: 1 },
+        '100%': { transform: 'translateY(108vh)', opacity: 0 },
+      },
     }}>
-      <Container
-        maxWidth={false}
-        sx={{
-          minHeight: 'calc(100vh - 73px)',
-          position: 'relative',
-          px: { xs: 2.5, sm: 5, md: 8 },
-          pt: { xs: 9, md: 11 },
-          pb: { xs: 0, md: 0 },
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Box sx={{
-          width: '100%',
-          maxWidth: 980,
-          textAlign: 'center',
-          position: 'relative',
-          zIndex: 2,
-        }}>
-          <Typography
-            component="h1"
+      <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {raindrops.map((drop) => (
+          <Box
+            key={drop.left}
             sx={{
-              color: '#151515',
-              fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
-              fontWeight: 300,
-              fontSize: { xs: '3.4rem', sm: '4.8rem', md: '6.8rem' },
-              lineHeight: 0.95,
-              letterSpacing: { xs: '0.12em', md: '0.18em' },
-              textIndent: { xs: '0.12em', md: '0.18em' },
-              mb: { xs: 2.2, md: 2.6 },
+              position: 'absolute',
+              left: drop.left,
+              top: '-28px',
+              width: '1.5px',
+              height: `${drop.height}px`,
+              borderRadius: '999px',
+              background: `rgba(20, 20, 20, ${drop.opacity})`,
+              animation: `rainFall ${drop.duration} linear infinite`,
+              animationDelay: drop.delay,
             }}
-          >
-            XIAOMENG
-          </Typography>
-
-          <Typography sx={{
-            color: '#5f6368',
-            fontSize: { xs: '0.98rem', md: '1.05rem' },
-            lineHeight: 1.9,
-            fontWeight: 300,
-            maxWidth: 620,
-            mx: 'auto',
-            mb: { xs: 2.6, md: 3.2 },
-          }}>
-            A small personal world for code, learning notes, visual stories, and the soft courage of building things carefully.
-          </Typography>
-
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: { xs: 1.2, md: 2 },
-            mb: { xs: 2.5, md: 3 },
-          }}>
-            {whispers.map((item) => (
-              <Typography
-                key={item}
-                sx={{
-                  color: '#222',
-                  fontSize: '0.78rem',
-                  letterSpacing: '0.16em',
-                  textTransform: 'uppercase',
-                  fontWeight: 400,
-                }}
-              >
-                {item}
-              </Typography>
-            ))}
-          </Box>
-
-          <Button
-            component={Link}
-            href="/my-work"
-            variant="text"
-            endIcon={<ArrowForward />}
-            sx={{
-              color: '#111',
-              borderBottom: '1px solid #111',
-              borderRadius: 0,
-              px: 0,
-              py: 0.6,
-              textTransform: 'none',
-              fontSize: '0.95rem',
-              fontWeight: 400,
-              letterSpacing: '0.03em',
-              '&:hover': {
-                bgcolor: 'transparent',
-                borderBottomColor: '#777',
-              },
-            }}
-          >
-            enter my world
-          </Button>
-        </Box>
-
-        <Box sx={{
-          position: 'relative',
-          zIndex: 1,
-          width: 'min(1180px, 112vw)',
-          height: { xs: '43vh', sm: '48vh', md: '52vh' },
-          minHeight: { xs: 310, md: 430 },
-          mt: { xs: 3, md: 1 },
-          mx: 'auto',
-          overflow: 'visible',
-        }}>
-          <Image
-            src="/cartoon1.PNG"
-            alt="Xiaomeng working in her illustrated world"
-            fill
-            sizes="100vw"
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-              mixBlendMode: 'multiply',
-            }}
-            priority
           />
-        </Box>
-      </Container>
+        ))}
+      </Box>
+
+      <Box sx={{
+        position: 'absolute',
+        zIndex: 2,
+        left: { xs: '5.5%', sm: '7%', md: '13%', lg: '15%' },
+        top: { xs: '13%', sm: '14%', md: '25%', lg: '26%' },
+        width: { xs: '84%', sm: '62%', md: '34%', lg: '30%' },
+        textAlign: { xs: 'center', md: 'center' },
+      }}>
+        <Typography
+          component="h1"
+          sx={{
+            color: '#111',
+            fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
+            fontWeight: 300,
+            fontSize: { xs: '2.28rem', sm: '3rem', md: '3.55rem', lg: '3.95rem' },
+            lineHeight: 1,
+            letterSpacing: { xs: '0.12em', md: '0.14em' },
+            textIndent: { xs: '0.12em', md: '0.14em' },
+            mb: { xs: 2.2, md: 4.6 },
+          }}
+        >
+          XIAOMENG
+        </Typography>
+
+        <Typography sx={{
+          color: '#666',
+          fontSize: { xs: '0.95rem', md: '1.02rem' },
+          lineHeight: 1.9,
+          fontWeight: 300,
+          maxWidth: 520,
+          mx: 'auto',
+        }}>
+          Welcome to Xiaomeng&apos;s personal website, where you&apos;ll find code, learning notes, hand-drawn dreams, and small stories from everyday life.
+        </Typography>
+      </Box>
+
+      <Box sx={{
+        position: 'absolute',
+        zIndex: 1,
+        left: { xs: '-58vw', sm: '-36vw', md: '-8vw', lg: '-4vw' },
+        right: { xs: '-58vw', sm: '-36vw', md: '-8vw', lg: '-4vw' },
+        bottom: { xs: '-8vh', sm: '-10vh', md: '-20vh', lg: '-23vh' },
+        height: { xs: '69vh', sm: '72vh', md: '91vh', lg: '96vh' },
+        pointerEvents: 'none',
+      }}>
+        <Image
+          src="/cartoon1.PNG"
+          alt="Xiaomeng working in her illustrated world"
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: 'contain',
+            objectPosition: 'center bottom',
+            mixBlendMode: 'multiply',
+          }}
+          priority
+        />
+      </Box>
     </Box>
   );
 }

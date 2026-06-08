@@ -9,9 +9,8 @@ export default function NavBar() {
   const items = [
     { href: "/", label: "Home" },
     { href: "/my-work", label: "Work" },
-    { href: "/leetcode", label: "LeetCode" },
+    { href: "/project", label: "Project" },
     { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
   ];
 
   // 🎨 根据页面路径动态获取主题配色
@@ -47,23 +46,13 @@ export default function NavBar() {
           hoverBg: 'rgba(0,0,0,0.02)',
           backdrop: 'blur(10px)'
         };
-      case '/contact':
-        // Contact - 蓝色专业主题
+      case '/project':
         return {
-          navBg: 'rgba(240, 248, 255, 0.9)',
-          borderColor: 'rgba(100, 149, 237, 0.3)',
-          activeColor: '#1e3a8a',
-          inactiveColor: '#64748b',
-          hoverBg: 'rgba(100, 149, 237, 0.08)',
-          backdrop: 'blur(10px)'
-        };
-      case '/leetcode':
-        return {
-          navBg: 'rgba(248, 250, 252, 0.92)',
-          borderColor: 'rgba(99, 102, 241, 0.22)',
-          activeColor: '#4338ca',
-          inactiveColor: '#64748b',
-          hoverBg: 'rgba(99, 102, 241, 0.08)',
+          navBg: 'rgba(253, 252, 249, 0.92)',
+          borderColor: 'rgba(36, 33, 28, 0.16)',
+          activeColor: '#1f1d19',
+          inactiveColor: '#6b665d',
+          hoverBg: 'rgba(36, 33, 28, 0.06)',
           backdrop: 'blur(10px)'
         };
       default:
@@ -102,9 +91,13 @@ export default function NavBar() {
       <Toolbar sx={{ justifyContent: 'center', py: 2 }}>
         <Box sx={{
           display: 'flex',
-          gap: { xs: 0.5, sm: 1.5, md: 3 },
-          flexWrap: 'wrap',
-          justifyContent: 'center'
+          gap: { xs: 0.25, sm: 1.5, md: 3 },
+          flexWrap: 'nowrap',
+          justifyContent: 'center',
+          overflowX: 'auto',
+          maxWidth: '100%',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' }
         }}>
           {items.map((item) => {
             const isActive = pathname === item.href;
@@ -118,9 +111,10 @@ export default function NavBar() {
                 sx={{
                   color: isActive ? pageTheme.activeColor : pageTheme.inactiveColor,
                   fontWeight: isActive ? 500 : 400,
-                  fontSize: '0.95rem',
+                  fontSize: { xs: '0.82rem', sm: '0.9rem', md: '0.95rem' },
                   textTransform: 'none',
-                  px: { xs: 1.5, sm: 2, md: 3 },
+                  minWidth: 'auto',
+                  px: { xs: 0.95, sm: 2, md: 3 },
                   py: 1,
                   borderRadius: '6px',
                   fontFamily: '"Inter", "Helvetica", sans-serif',

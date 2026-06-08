@@ -1,259 +1,221 @@
 'use client';
 
-import { 
-  Box, 
-  Container, 
-  Typography
-} from '@mui/material';
-
+import Link from 'next/link';
 import Image from 'next/image';
+import { Box, Button, Container, Typography } from '@mui/material';
+import { ArrowForward, GitHub, WorkOutline } from '@mui/icons-material';
+import { links, projects, site } from '@/data/site';
+
+const focusAreas = ['AI Testing', 'Full-stack Apps', 'Data Science', 'Learning Systems'];
+
+const raindrops = [
+  { left: '8%', delay: '0s', duration: '4.5s', height: 18 },
+  { left: '18%', delay: '1.2s', duration: '5.2s', height: 12 },
+  { left: '31%', delay: '0.6s', duration: '4.8s', height: 16 },
+  { left: '44%', delay: '2.1s', duration: '5.6s', height: 13 },
+  { left: '57%', delay: '1.6s', duration: '4.9s', height: 17 },
+  { left: '69%', delay: '0.3s', duration: '5.4s', height: 12 },
+  { left: '82%', delay: '2.8s', duration: '4.7s', height: 15 },
+  { left: '93%', delay: '1s', duration: '5.8s', height: 14 },
+];
 
 export default function Home() {
+  const featured = projects.slice(0, 3);
+
   return (
-    <Box sx={{ 
-      minHeight: '100vh',
-      bgcolor: 'white',
+    <Box sx={{
+      minHeight: 'calc(100vh - 73px)',
+      bgcolor: '#fbfbfa',
       position: 'relative',
       overflow: 'hidden',
       backgroundImage: `
-        radial-gradient(circle at 20% 80%, rgba(0,0,0,0.01) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0,0,0,0.01) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(0,0,0,0.005) 0%, transparent 30%)
+        linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(244,247,246,0.9) 100%),
+        radial-gradient(circle at 85% 15%, rgba(107, 114, 128, 0.12), transparent 30%)
       `,
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `
-          repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 2px,
-            rgba(0,0,0,0.003) 2px,
-            rgba(0,0,0,0.003) 4px
-          ),
-          repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 2px,
-            rgba(0,0,0,0.002) 2px,
-            rgba(0,0,0,0.002) 4px
-          )
-        `,
-        pointerEvents: 'none',
-        zIndex: 0
-      }
+      '@keyframes rainFall': {
+        '0%': { transform: 'translateY(-40px)', opacity: 0 },
+        '15%': { opacity: 0.45 },
+        '85%': { opacity: 0.45 },
+        '100%': { transform: 'translateY(105vh)', opacity: 0 },
+      },
     }}>
-      {/* 💧 蓝色雨滴动画效果 */}
-      <Box sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        pointerEvents: 'none',
-        zIndex: 1
-      }}>
-        {/* 大雨滴 */}
-        {Array.from({ length: 12 }).map((_, i) => (
+      <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {raindrops.map((drop) => (
           <Box
-            key={i}
+            key={drop.left}
             sx={{
               position: 'absolute',
-              left: `${Math.random() * 100}%`,     // 随机水平位置覆盖整个屏幕
-              top: '-20px',                       // 从屏幕顶部开始
-              width: '3px',                       // 雨滴宽度 (可调整: 2px更细, 4px更粗)
-              height: '12px',                     // 雨滴高度 (可调整: 8px更短, 16px更长)
-              background: `linear-gradient(to bottom, 
-                hsl(0, 0%, ${25 + Math.random() * 15}%),
-                hsl(0, 0%, ${15 + Math.random() * 10}%)
-              )`,                                 // 黑灰色渐变 - 适应白色背景
-              borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%', // 雨滴形状
-              animationName: 'rainDrop',
-              animationDuration: `${1.5 + Math.random() * 2}s`, // 落下速度 (1.5-3.5秒) - 可改为更快或更慢
-              animationIterationCount: 'infinite',  // 无限循环
-              animationDelay: `${Math.random() * 3}s`, // 随机延迟 (0-3秒)
-              animationTimingFunction: 'linear',    // 匀速下落
-              opacity: 0.7,                        // 透明度 (可调整: 0.5更透明, 0.9更不透明)
-              '@keyframes rainDrop': {
-                '0%': {
-                  transform: 'translateY(-20px)',   // 起始位置
-                  opacity: 0                       // 淡入
-                },
-                '10%': {
-                  opacity: 0.7                     // 显现
-                },
-                '90%': {
-                  opacity: 0.7                     // 保持可见
-                },
-                '100%': {
-                  transform: 'translateY(100vh)',   // 落到屏幕底部
-                  opacity: 0                       // 淡出
-                }
-              }
-            }}
-          />
-        ))}
-        
-        {/* 小雨滴 - 增加层次感 */}
-        {Array.from({ length: 18 }).map((_, i) => (
-          <Box
-            key={`small-${i}`}
-            sx={{
-              position: 'absolute',
-              left: `${Math.random() * 100}%`,
-              top: '-10px',
-              width: '2px',                       // 更小的雨滴
-              height: '8px',
-              background: `linear-gradient(to bottom, 
-                hsl(0, 0%, ${35 + Math.random() * 10}%),
-                hsl(0, 0%, ${25 + Math.random() * 10}%)
-              )`,
-              borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
-              animationName: 'smallRainDrop',
-              animationDuration: `${2 + Math.random() * 3}s`, // 稍慢一些
-              animationIterationCount: 'infinite',
-              animationDelay: `${Math.random() * 4}s`,
-              animationTimingFunction: 'linear',
-              opacity: 0.5,                       // 更透明
-              '@keyframes smallRainDrop': {
-                '0%': {
-                  transform: 'translateY(-10px)',
-                  opacity: 0
-                },
-                '15%': {
-                  opacity: 0.5
-                },
-                '85%': {
-                  opacity: 0.5
-                },
-                '100%': {
-                  transform: 'translateY(100vh)',
-                  opacity: 0
-                }
-              }
+              left: drop.left,
+              top: '-24px',
+              width: '2px',
+              height: `${drop.height}px`,
+              borderRadius: '999px',
+              background: 'linear-gradient(to bottom, rgba(31,41,55,0.02), rgba(31,41,55,0.42))',
+              animation: `rainFall ${drop.duration} linear infinite`,
+              animationDelay: drop.delay,
             }}
           />
         ))}
       </Box>
 
-      {/* Main Content */}
-      <Container maxWidth="xl" sx={{ 
-        position: 'relative', 
-        zIndex: 2,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+      <Container maxWidth="lg" sx={{
+        position: 'relative',
+        zIndex: 1,
+        minHeight: 'calc(100vh - 73px)',
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', md: '1.08fr 0.92fr' },
+        alignItems: 'center',
+        gap: { xs: 5, md: 8 },
+        py: { xs: 7, md: 9 },
       }}>
-        {/* Large Illustration with Text Overlay */}
-        <Box sx={{
-          position: 'relative',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        
-        
-        }}>
-          {/* Text Overlay - positioned above the cat */}
-          <Box sx={{
-            position: 'absolute',
-            top: '15%',  // 从20%改为15%，向上移动
-            left: '4%',
-            zIndex: 10,
-            textAlign: 'left'
+        <Box>
+          <Typography sx={{
+            color: '#64748b',
+            fontSize: '0.82rem',
+            fontWeight: 700,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            mb: 2,
           }}>
-            {/* Main Title */}
-            <Typography
-              variant="h1"
-              component="h1"
-              sx={{
-                fontWeight: 300,
-                fontSize: { xs: '2rem', md: '2.8rem' },  // 缩小字体：从2.5rem/3.5rem改为2rem/2.8rem
-                color: '#2c3e50',
-                letterSpacing: '0.2em',
-                mb:3,
-                fontFamily: '"Inter", "Helvetica", sans-serif',
-                lineHeight: 1.1,
-                textShadow: '0 2px 4px rgba(255,255,255,0.8)',
-                textAlign: 'center'  // 让标题也居中对齐
-              }}
-            >
-              XIAOMENG
-            </Typography>
-            
-            {/* Subtitle */}
-            <Typography
-              variant="body1"
-              sx={{
-                color: '#7f8c8d',
-                fontWeight: 300,
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                maxWidth: '500px',  // 增加最大宽度，让文字更长
-                letterSpacing: '0.1em',
-                lineHeight: 1.6,
-                fontFamily: '"Inter", "Helvetica", sans-serif',
-                textShadow: '0 1px 2px rgba(255,255,255,0.8)',
-                textAlign: 'center'  // 居中对齐
-              }}
-            >
-              Welcome to Xiaomeng's World ✨<br/>
-              <br/>
+            Seattle · CS + Data Science
+          </Typography>
 
-              Where you can find my journey <br/>
-              as a Northeastern student
-              — exploring code, sharing thoughts, and writing stories.
-            </Typography>
+          <Typography
+            component="h1"
+            sx={{
+              color: '#172033',
+              fontWeight: 700,
+              fontSize: { xs: '2.65rem', sm: '3.5rem', md: '4.4rem' },
+              lineHeight: 0.98,
+              letterSpacing: 0,
+              maxWidth: 720,
+              mb: 3,
+            }}
+          >
+            Xiaomeng Li builds practical AI and software tools.
+          </Typography>
+
+          <Typography sx={{
+            color: '#475569',
+            fontSize: { xs: '1rem', md: '1.12rem' },
+            lineHeight: 1.8,
+            maxWidth: 650,
+            mb: 4,
+          }}>
+            {site.headlineEN} I care about clear interfaces, reliable workflows, and the small systems that help people learn and build better.
+          </Typography>
+
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.2, mb: 4 }}>
+            {focusAreas.map((area) => (
+              <Box
+                key={area}
+                sx={{
+                  px: 1.5,
+                  py: 0.75,
+                  border: '1px solid #d7dde5',
+                  borderRadius: '999px',
+                  color: '#334155',
+                  bgcolor: 'rgba(255,255,255,0.72)',
+                  fontSize: '0.88rem',
+                  fontWeight: 600,
+                }}
+              >
+                {area}
+              </Box>
+            ))}
           </Box>
 
-          {/* Large Image */}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+            <Button
+              component={Link}
+              href="/my-work"
+              variant="contained"
+              startIcon={<WorkOutline />}
+              endIcon={<ArrowForward />}
+              sx={{
+                bgcolor: '#172033',
+                color: 'white',
+                borderRadius: '8px',
+                px: 2.4,
+                py: 1.1,
+                textTransform: 'none',
+                fontWeight: 700,
+                '&:hover': { bgcolor: '#0f172a' },
+              }}
+            >
+              View Work
+            </Button>
+            <Button
+              component="a"
+              href={links.github}
+              target="_blank"
+              rel="noreferrer"
+              variant="outlined"
+              startIcon={<GitHub />}
+              sx={{
+                borderColor: '#cbd5e1',
+                color: '#172033',
+                borderRadius: '8px',
+                px: 2.2,
+                py: 1.1,
+                textTransform: 'none',
+                fontWeight: 700,
+              }}
+            >
+              GitHub
+            </Button>
+          </Box>
+        </Box>
+
+        <Box sx={{
+          display: 'grid',
+          gridTemplateRows: 'auto auto',
+          gap: 2,
+          alignSelf: 'center',
+        }}>
           <Box sx={{
             position: 'relative',
-            transform: 'translate(18px, 60px)', // 向右2个单位(16px)，向下4个单位(32px)
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: '20px',
-              left: '20px',
-              right: '20px',
-              bottom: '20px',
-              background: 'radial-gradient(ellipse 60% 40% at center, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 40%, transparent 70%)',
-              borderRadius: '50%',
-              zIndex: -1,
-              filter: 'blur(25px)',
-              transform: 'scale(1.2)'
-            },
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: '30px',
-              left: '30px',
-              right: '30px',
-              bottom: '40px',
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.01) 50%, transparent 100%)',
-              borderRadius: '40%',
-              zIndex: -1,
-              filter: 'blur(20px)'
-            }
+            minHeight: { xs: 310, md: 430 },
+            border: '1px solid #dde4ed',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            bgcolor: '#ffffff',
+            boxShadow: '0 22px 80px rgba(15, 23, 42, 0.12)',
           }}>
-          <Image
+            <Image
               src="/cartoon1.PNG"
-              alt="Main illustration"
-              width={1100}
-              height={825}
-              style={{
-                objectFit: 'contain',
-                filter: 'contrast(1.02) saturate(1.05) brightness(0.98)',
-                transition: 'all 0.3s ease',
-                mixBlendMode: 'multiply',
-                opacity: 0.95
-              }}
-            priority
-          />
+              alt="Xiaomeng's illustrated world"
+              fill
+              sizes="(max-width: 900px) 100vw, 42vw"
+              style={{ objectFit: 'cover', objectPosition: 'center 52%' }}
+              priority
+            />
+          </Box>
+
+          <Box sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
+            gap: 1.2,
+          }}>
+            {featured.map((project) => (
+              <Box
+                key={project.title}
+                sx={{
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  bgcolor: 'rgba(255,255,255,0.78)',
+                  p: 1.5,
+                  minHeight: 108,
+                }}
+              >
+                <Typography sx={{ color: '#0f172a', fontWeight: 800, fontSize: '0.92rem', mb: 0.7 }}>
+                  {project.title}
+                </Typography>
+                <Typography sx={{ color: '#64748b', fontSize: '0.78rem', lineHeight: 1.45 }}>
+                  {project.tags.join(' · ')}
+                </Typography>
+              </Box>
+            ))}
           </Box>
         </Box>
       </Container>

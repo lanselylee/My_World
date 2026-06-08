@@ -23,28 +23,43 @@ export type Links = {
 
 export const site = {
   name: 'Xiaomeng Li / 李晓蒙',
-  headlineEN: 'Software Engineer — builds data dashboards & AI testing tools.',
-  headlineZH: '软件工程师，专注数据看板与 AI 测试工具。',
+  headlineEN: 'Computer Science & Data Science student building AI testing tools, full-stack apps, and learning systems.',
+  headlineZH: '计算机与数据科学学生，关注 AI 测试工具、全栈应用和学习系统。',
 };
 
 export const projects: Project[] = [
   {
-    title: 'TestSprite Metrics Dashboard',
-    blurbEN: 'Next.js + AWS Lambda + DynamoDB. Retention, DAU/WAU, subscription cohorts.',
-    blurbZH: 'Next.js + AWS Lambda + DynamoDB，包含留存、DAU/WAU、订阅分群。',
-    tags: ['Next.js', 'Lambda', 'DynamoDB'],
+    title: 'LeetCode Learning System',
+    blurbEN: 'A Python-based algorithm notebook with failure logs, spaced repetition review, and GitHub Actions reminders.',
+    blurbZH: '基于 Python 的算法学习系统，包含错题复盘、记忆曲线复习和 GitHub Actions 提醒。',
+    tags: ['Python', 'Automation', 'GitHub Actions'],
     links: [
-      { label: 'Live', href: '#' },
-      { label: 'Code', href: '#' },
-      { label: 'Case Study', href: '#' },
+      { label: 'Code', href: 'https://github.com/lanselylee/leetcode-learning-system' },
     ],
   },
   {
-    title: 'PackageTrackr',
-    blurbEN: 'Python + Sheets + Lambda. Multi-user parcel search with weekly stats.',
-    blurbZH: 'Python + Sheets + Lambda，多人包裹查询与周统计。',
-    tags: ['Python', 'Lambda', 'Sheets'],
-    links: [{ label: 'Code', href: '#' }],
+    title: 'My World',
+    blurbEN: 'A personal portfolio site that blends software projects, writing, and visual storytelling.',
+    blurbZH: '个人作品集网站，融合软件项目、写作与视觉叙事。',
+    tags: ['Next.js', 'TypeScript', 'MUI'],
+    links: [
+      { label: 'Live', href: 'https://my-world-3eqr3yhgw-xiaomenglis-projects.vercel.app/' },
+      { label: 'Code', href: 'https://github.com/lanselylee/My_World' },
+    ],
+  },
+  {
+    title: 'Pokemon Collection App',
+    blurbEN: 'A Java application for managing a personal Pokemon collection with object-oriented design.',
+    blurbZH: 'Java 宝可梦收藏管理应用，展示面向对象设计和基础应用架构。',
+    tags: ['Java', 'OOP', 'Course Project'],
+    links: [{ label: 'Code', href: 'https://github.com/lanselylee/pokemon-collection-app' }],
+  },
+  {
+    title: 'Sudoku React Game',
+    blurbEN: 'A Sudoku game built with React, Context API, and Vite, focused on state management and game logic.',
+    blurbZH: 'React + Context API + Vite 数独游戏，重点是状态管理和游戏逻辑。',
+    tags: ['React', 'Vite', 'Game Logic'],
+    links: [{ label: 'Code', href: 'https://github.com/lanselylee/-Junrui---Duan-_-Xiaomeng---Li--Project2' }],
   },
 ];
 
@@ -62,10 +77,9 @@ export const now: string[] = [
 ];
 
 export const links: Links = {
-  github: 'https://github.com/yourname',
-  linkedin: 'https://www.linkedin.com/in/yourname',
-  email: 'you@email.com',
+  github: 'https://github.com/lanselylee',
+  linkedin: 'https://www.linkedin.com/in/xiaomeng-li',
+  email: 'lixiaomengus@gmail.com',
 };
-
 
 

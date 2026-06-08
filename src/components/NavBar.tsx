@@ -8,7 +8,8 @@ export default function NavBar() {
   
   const items = [
     { href: "/", label: "Home" },
-    { href: "/my-work", label: "Profile" },
+    { href: "/my-work", label: "Work" },
+    { href: "/leetcode", label: "LeetCode" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ];
@@ -56,6 +57,15 @@ export default function NavBar() {
           hoverBg: 'rgba(100, 149, 237, 0.08)',
           backdrop: 'blur(10px)'
         };
+      case '/leetcode':
+        return {
+          navBg: 'rgba(248, 250, 252, 0.92)',
+          borderColor: 'rgba(99, 102, 241, 0.22)',
+          activeColor: '#4338ca',
+          inactiveColor: '#64748b',
+          hoverBg: 'rgba(99, 102, 241, 0.08)',
+          backdrop: 'blur(10px)'
+        };
       default:
         // 默认主题
         return {
@@ -90,7 +100,12 @@ export default function NavBar() {
       }}
     >
       <Toolbar sx={{ justifyContent: 'center', py: 2 }}>
-        <Box sx={{ display: 'flex', gap: 3 }}>
+        <Box sx={{
+          display: 'flex',
+          gap: { xs: 0.5, sm: 1.5, md: 3 },
+          flexWrap: 'wrap',
+          justifyContent: 'center'
+        }}>
           {items.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -105,7 +120,7 @@ export default function NavBar() {
                   fontWeight: isActive ? 500 : 400,
                   fontSize: '0.95rem',
                   textTransform: 'none',
-                  px: 3,
+                  px: { xs: 1.5, sm: 2, md: 3 },
                   py: 1,
                   borderRadius: '6px',
                   fontFamily: '"Inter", "Helvetica", sans-serif',

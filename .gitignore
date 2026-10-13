@@ -16,3 +16,6 @@ node_modules/
 
 # AI image handoff workspace (large files)
 design-handoff/
+
+# TypeScript incremental cache
+*.tsbuildinfo

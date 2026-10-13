@@ -13,3 +13,9 @@ node_modules/
 .out/
 .DS_Store
 .env*
+
+# AI image handoff workspace (large files)
+design-handoff/
+
+# TypeScript incremental cache
+*.tsbuildinfo

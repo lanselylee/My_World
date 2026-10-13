@@ -70,6 +70,9 @@ export default function NavBar() {
 
   const pageTheme = getPageTheme();
 
+  // The homepage room has its own Case Index navigation.
+  if (pathname === '/') return null;
+
   return (
     <AppBar 
       position="static" 

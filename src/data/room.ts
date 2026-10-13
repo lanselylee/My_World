@@ -102,6 +102,6 @@ export const caseRoutes: Record<CaseId, string> = {
 export const contact = {
   email: 'li.xiaomen@northeastern.edu',
   github: 'https://github.com/lanselylee',
-  linkedin: 'https://www.linkedin.com/in/xiaomeng-li-70730a331/',
+  linkedin: 'https://www.linkedin.com/in/xiaomeng-cs/',
   resume: '/Xiaomeng_Li_Resume.pdf',
 };

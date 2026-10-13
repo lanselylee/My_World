@@ -570,6 +570,28 @@
   border-top-color: rgba(141, 255, 174, 0.3);
 }
 
+.track {
+  margin-top: 10px;
+}
+
+.track h4 {
+  margin: 0 0 4px;
+  font-family: var(--fell);
+  font-size: 19px;
+  font-weight: 400;
+}
+
+.track h4 span {
+  margin-left: 6px;
+  font-family: var(--elite);
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.list li {
+  margin-bottom: 6px;
+}
+
 .facts {
   display: grid;
   grid-template-columns: max-content 1fr;

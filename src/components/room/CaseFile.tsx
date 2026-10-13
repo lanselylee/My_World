@@ -1,8 +1,8 @@
 'use client';
 
-import { CSSProperties, ReactNode, useRef } from 'react';
+import { CSSProperties, Fragment, ReactNode, useRef } from 'react';
 import { CaseId, caseRoutes, contact } from '../../data/room';
-import { projects } from '../../data/site';
+import { experience, profile, projects } from '../../data/profile';
 import styles from './room.module.css';
 import useDialog from './useDialog';
 
@@ -34,36 +34,34 @@ function FullPage({ id }: { id: CaseId }) {
 const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; body: ReactNode }> = {
   about: {
     stamp: 'Personnel dossier',
-    title: 'Xiaomeng Li',
+    title: profile.name,
     body: (
       <>
         <dl className={styles.facts}>
-          <dt>Status</dt>
-          <dd>M.S. Computer Science, Northeastern University (Seattle)</dd>
+          <dt>Study</dt>
+          <dd>
+            {profile.education.degree}, {profile.education.school} ({profile.education.place})
+            <br />
+            {profile.education.dates} · GPA {profile.education.gpa}
+          </dd>
+          <dt>Last role</dt>
+          <dd>Software Engineering Intern, TestSprite (AI testing platform, 100K+ developers)</dd>
           <dt>Seeking</dt>
-          <dd>SDE roles across full-stack, AI tooling, and developer experience</dd>
-          <dt>Now</dt>
-          <dd>AI testing startup: testing workflows, analytics, report generation, collaboration features</dd>
+          <dd>Software engineering roles: full-stack, AI tooling, developer experience</dd>
           <dt>Before</dt>
           <dd>Two years designing original horror escape rooms in Beijing</dd>
         </dl>
-        <p>
-          I am a software engineer in training who likes turning messy human workflows into clear,
-          testable systems. My path runs from horror-room storytelling and puzzle design to AI testing
-          tools, web products, and developer workflows.
-        </p>
-        <h3>Stack</h3>
+        <p>{profile.summary}</p>
+        <h3>Skills</h3>
         <dl className={styles.facts}>
-          <dt>Frontend</dt>
-          <dd>React, Next.js, TypeScript, Material UI, responsive UI</dd>
-          <dt>Backend</dt>
-          <dd>Python, Java, REST APIs, AWS Lambda, data workflows</dd>
-          <dt>AI tools</dt>
-          <dd>LLM workflows, MCP integrations, Claude Code, Codex, browser automation</dd>
-          <dt>Product</dt>
-          <dd>Puzzle logic, user flow, feedback loops, storytelling, iteration</dd>
+          {profile.skills.map((s) => (
+            <Fragment key={s.area}>
+              <dt>{s.area}</dt>
+              <dd>{s.items}</dd>
+            </Fragment>
+          ))}
         </dl>
-        <FullPage id="about" />
+        <p className={styles.meta}>Coursework: {profile.education.coursework}</p>
       </>
     ),
   },
@@ -72,29 +70,29 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
     title: 'Work experience',
     body: (
       <>
-        <section className={styles.entry}>
-          <h3>AI testing systems · TestSprite</h3>
-          <p>
-            AI-powered testing workflows, MCP integrations, report generation, collaboration features,
-            and product analytics for developer-facing QA systems.
-          </p>
-        </section>
-        <section className={styles.entry}>
-          <h3>Agentic software</h3>
-          <p>
-            Python, TypeScript, React, Next.js, AWS Lambda, browser-use, Claude Code, and OpenAI Codex,
-            with a focus on tools that make messy workflows observable and repeatable.
-          </p>
-        </section>
-        <section className={styles.entry}>
-          <h3>Horror game worlds · Beijing</h3>
-          <p>
-            Two years creating original horror escape-room themes, designing player experiences,
-            producing room games, and helping market a venue that reached national hot rankings and
-            became No. 1 in Beijing.
-          </p>
-        </section>
-        <FullPage id="work" />
+        {experience.map((role) => (
+          <section key={role.company} className={styles.entry}>
+            <h3>
+              {role.title} · {role.company}
+            </h3>
+            <p className={styles.meta}>
+              {role.dates} · {role.place}
+            </p>
+            {role.blurb && <p>{role.blurb}</p>}
+            {role.tracks.map((t) => (
+              <div key={t.name} className={styles.track}>
+                <h4>
+                  {t.name} <span>{t.stack}</span>
+                </h4>
+                <ul className={styles.list}>
+                  {t.points.map((pt) => (
+                    <li key={pt}>{pt}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </section>
+        ))}
       </>
     ),
   },
@@ -109,27 +107,37 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
           return (
             <section key={p.title} className={styles.entry}>
               <h3>
-                <Typed text={head} delay={i * 0.7} />
+                <Typed text={head} delay={i * 0.6} />
               </h3>
-              <p>{p.blurbEN}</p>
-              <p className={styles.meta}>STACK: {p.tags.join(' / ')}</p>
               <p className={styles.meta}>
-                {p.links.map((l) => (
-                  <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                    [{l.label}]
-                  </a>
-                ))}
+                STACK: {p.stack}
+                {p.status && ` · ${p.status.toUpperCase()}`}
               </p>
+              <ul className={styles.list}>
+                {p.points.map((pt) => (
+                  <li key={pt}>{pt}</li>
+                ))}
+              </ul>
+              {p.links.length > 0 && (
+                <p className={styles.meta}>
+                  {p.links.map((l) => (
+                    <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
+                      [{l.label}]
+                    </a>
+                  ))}
+                </p>
+              )}
             </section>
           );
         })}
         <section className={styles.entry}>
           <h3>
             <Typed
-              text={`CASE FILE #${String(projects.length + 1).padStart(3, '0')}  Escape room web game (in progress)`}
-              delay={projects.length * 0.7}
+              text={`CASE FILE #${String(projects.length + 1).padStart(3, '0')}  Escape room web game`}
+              delay={projects.length * 0.6}
             />
           </h3>
+          <p className={styles.meta}>STATUS: IN DESIGN</p>
           <p>
             A browser-based horror room where story, puzzles, inventory, and AI-made video scenes unfold
             together.
@@ -209,7 +217,7 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
           <dt>LinkedIn</dt>
           <dd>
             <a href={contact.linkedin} target="_blank" rel="noreferrer">
-              linkedin.com/in/xiaomeng-li
+              linkedin.com/in/xiaomeng-cs
             </a>
           </dd>
         </dl>

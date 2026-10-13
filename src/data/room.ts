@@ -89,16 +89,6 @@ export const portraitEyes = [
   { cx: 451, cy: 397, rx: 16, ry: 7 },
 ];
 
-export const caseRoutes: Record<CaseId, string> = {
-  about: '/about',
-  work: '/my-work',
-  projects: '/project',
-  dreams: '/dreams',
-  stories: '/stories',
-  resume: '/Xiaomeng_Li_Resume.pdf',
-  specimens: 'https://github.com/lanselylee/leetcode-learning-system',
-};
-
 export const contact = {
   email: 'li.xiaomen@northeastern.edu',
   github: 'https://github.com/lanselylee',

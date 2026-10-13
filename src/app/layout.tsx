@@ -1,6 +1,5 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import NavBar from "../components/NavBar";
 import ThemeRegistry from './ThemeRegistry';
 import { IM_Fell_English, Special_Elite } from 'next/font/google';
 
@@ -23,7 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${fell.variable} ${elite.variable}`}>
       <body className="antialiased">
         <ThemeRegistry>
-          <NavBar />
           {children}
         </ThemeRegistry>
       </body>

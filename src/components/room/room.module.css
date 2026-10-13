@@ -707,12 +707,6 @@
   opacity: 0.7;
 }
 
-.indexPage {
-  font-family: var(--elite);
-  font-size: 12px;
-  color: var(--oxblood);
-  white-space: nowrap;
-}
 
 .indexFoot {
   font-family: var(--elite);

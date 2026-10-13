@@ -1,7 +1,7 @@
 'use client';
 
 import { CSSProperties, Fragment, ReactNode, useRef } from 'react';
-import { CaseId, caseRoutes, contact } from '../../data/room';
+import { CaseId, contact } from '../../data/room';
 import { experience, profile, projects } from '../../data/profile';
 import styles from './room.module.css';
 import useDialog from './useDialog';
@@ -19,17 +19,28 @@ function Typed({ text, delay = 0 }: { text: string; delay?: number }) {
   );
 }
 
-function FullPage({ id }: { id: CaseId }) {
-  const href = caseRoutes[id];
-  const external = !href.startsWith('/');
-  return (
-    <p className={styles.fullPage}>
-      <a href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
-        {external ? 'Open on GitHub →' : 'Read the full file →'}
-      </a>
-    </p>
-  );
-}
+const dreams = [
+  {
+    title: '我梦见自己在海边奔跑',
+    content:
+      '夕阳西下，我赤着脚在柔软的沙滩上奔跑。海浪轻抚着我的脚踝，咸湿的海风吹散了我的头发。那一刻，我感到前所未有的自由，仿佛可以跑到天涯海角，跑到时间的尽头。',
+  },
+  {
+    title: '我梦到一只没有眼睛的人',
+    content:
+      '在昏暗的街道上，我遇到了一个奇怪的人。他没有眼睛，却能准确地看到一切。他告诉我，真正的视觉不在于眼睛，而在于心灵。当我醒来时，这句话依然在我耳边回响。',
+  },
+  {
+    title: '飞翔在星空中',
+    content:
+      '我张开双臂，缓缓升上夜空。星星在我身边闪烁，月亮为我照亮道路。我穿越云层，感受着宇宙的无垠与静谧。在这里，没有重力的束缚，只有无限的可能。',
+  },
+  {
+    title: '时间倒流的城市',
+    content:
+      '我走在一座奇特的城市里，这里的时间是倒流的。破碎的花瓶重新拼合，凋零的花朵重新绽放，老人变回年轻的模样。我意识到，也许时间本身就是一个幻象。',
+  },
+];
 
 const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; body: ReactNode }> = {
   about: {
@@ -137,13 +148,27 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
               delay={projects.length * 0.6}
             />
           </h3>
-          <p className={styles.meta}>STATUS: IN DESIGN</p>
+          <p className={styles.meta}>STATUS: IN DESIGN · SURVIVAL HORROR / PUZZLE · WEB GAME + VIDEO STORY</p>
           <p>
             A browser-based horror room where story, puzzles, inventory, and AI-made video scenes unfold
             together.
           </p>
+          <ul className={styles.list}>
+            <li>
+              Prologue video: an AI-made cinematic opening introduces the house, the missing person, and
+              the first contradiction in the story.
+            </li>
+            <li>
+              Playable room: players inspect objects, collect clues, unlock drawers, and connect memories.
+            </li>
+            <li>
+              Puzzle logic: inventory, clue board, keypad locks, hidden messages, timed audio, branching
+              notes, and a final reveal.
+            </li>
+          </ul>
           <p className={styles.meta}>
-            <a href="/project">[Project page]</a>
+            ROADMAP: story script &amp; character bible → room map, props &amp; clue dependency graph → AI
+            video storyboard → interactive prototype → puzzle testing &amp; difficulty tuning
           </p>
         </section>
       </>
@@ -155,13 +180,12 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
     body: (
       <>
         <p>Notes kept by lamplight: the dreams I wake up remembering.</p>
-        <ul className={styles.list}>
-          <li>我梦见自己在海边奔跑</li>
-          <li>我梦到一只没有眼睛的人</li>
-          <li>飞翔在星空中</li>
-          <li>时间倒流的城市</li>
-        </ul>
-        <FullPage id="dreams" />
+        {dreams.map((d) => (
+          <section key={d.title} className={styles.entry} lang="zh">
+            <h3>{d.title}</h3>
+            <p>{d.content}</p>
+          </section>
+        ))}
       </>
     ),
   },
@@ -188,8 +212,18 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
             can&apos;t carry.
           </p>
         </section>
-        <p className={styles.meta}>10,000+ followers · 300,000 words published · dozens of essays</p>
-        <FullPage id="stories" />
+        <section className={styles.entry}>
+          <h3>
+            <Typed text="My Favorite Creative Moment" delay={1.6} />
+          </h3>
+          <p>
+            Each time I finish a complete story, it feels like I&apos;ve created a whole world: its
+            characters come alive and keep breathing in my mind.
+          </p>
+        </section>
+        <p className={styles.meta}>
+          10,000+ followers · 300,000 words published · dozens of essays · endless imagination
+        </p>
       </>
     ),
   },
@@ -234,7 +268,11 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
           with failure logs, spaced-repetition review, and GitHub Actions reminders.
         </p>
         <p className={styles.meta}>Python · Automation · GitHub Actions</p>
-        <FullPage id="specimens" />
+        <p className={styles.fullPage}>
+          <a href="https://github.com/lanselylee/leetcode-learning-system" target="_blank" rel="noreferrer">
+            Open on GitHub →
+          </a>
+        </p>
       </>
     ),
   },

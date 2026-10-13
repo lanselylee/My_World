@@ -1,38 +1,27 @@
 export default function NotFound() {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      textAlign: 'center',
-      padding: '2rem',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <h1 style={{ marginBottom: '1rem', color: '#2c3e50', fontSize: '3rem' }}>
-        404
+    <main
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '1rem',
+        padding: '2rem',
+        textAlign: 'center',
+        background: '#141a1c',
+        color: '#e8dcc0',
+        fontFamily: 'var(--font-elite), "Courier New", monospace',
+      }}
+    >
+      <h1 style={{ margin: 0, fontFamily: 'var(--font-fell), Georgia, serif', fontWeight: 400, fontSize: '3rem' }}>
+        No such room
       </h1>
-      <h2 style={{ marginBottom: '1rem', color: '#34495e', fontSize: '2rem' }}>
-        Page Not Found
-      </h2>
-      <p style={{ marginBottom: '2rem', color: '#7f8c8d', fontSize: '1.1rem' }}>
-        The page you're looking for doesn't exist.
-      </p>
-      <a
-        href="/"
-        style={{
-          backgroundColor: '#3498db',
-          color: 'white',
-          padding: '12px 24px',
-          textDecoration: 'none',
-          borderRadius: '4px',
-          fontSize: '1rem'
-        }}
-      >
-        Go Home
+      <p style={{ margin: 0, color: '#b08d57' }}>This door opens onto a brick wall.</p>
+      <a href="/" style={{ color: '#e8dcc0', border: '1px solid #b08d57', padding: '10px 18px', textDecoration: 'none' }}>
+        Back to the study
       </a>
-    </div>
+    </main>
   );
 }
-

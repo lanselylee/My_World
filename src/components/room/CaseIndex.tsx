@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { CaseId, caseRoutes, contact, roomObjects } from '../../data/room';
+import { CaseId, contact, roomObjects } from '../../data/room';
 import styles from './room.module.css';
 import useDialog from './useDialog';
 
@@ -39,11 +39,6 @@ export default function CaseIndex({ onOpen, onClose }: Props) {
                 <span className={styles.indexLabel}>{o.label}</span>
                 <span className={styles.indexObject}>{o.object}</span>
               </button>
-              {caseRoutes[o.id].startsWith('/') && !caseRoutes[o.id].endsWith('.pdf') && (
-                <a href={caseRoutes[o.id]} className={styles.indexPage}>
-                  full page
-                </a>
-              )}
             </li>
           ))}
         </ol>

@@ -1,9 +1,10 @@
 'use client';
 
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useRef } from 'react';
 import { CaseId, caseRoutes, contact } from '../../data/room';
 import { projects } from '../../data/site';
 import styles from './room.module.css';
+import useDialog from './useDialog';
 
 type Props = { id: CaseId; onClose: () => void };
 
@@ -232,19 +233,14 @@ const files: Record<CaseId, { stamp: string; title: string; terminal?: boolean; 
 };
 
 export default function CaseFile({ id, onClose }: Props) {
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLElement>(null);
   const file = files[id];
-
-  useEffect(() => {
-    closeRef.current?.focus({ preventScroll: true });
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  useDialog(dialogRef, onClose);
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <article
+        ref={dialogRef}
         className={file.terminal ? styles.terminal : styles.file}
         role="dialog"
         aria-modal="true"
@@ -253,7 +249,7 @@ export default function CaseFile({ id, onClose }: Props) {
       >
         <div className={styles.fileHead}>
           <span className={styles.stamp}>{file.stamp}</span>
-          <button ref={closeRef} type="button" className={styles.close} onClick={onClose} aria-label="Close file">
+          <button type="button" className={styles.close} onClick={onClose} aria-label="Close file">
             ×
           </button>
         </div>

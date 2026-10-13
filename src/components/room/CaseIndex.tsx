@@ -1,25 +1,21 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { CaseId, caseRoutes, contact, roomObjects } from '../../data/room';
 import styles from './room.module.css';
+import useDialog from './useDialog';
 
 type Props = { onOpen: (id: CaseId) => void; onClose: () => void };
 
 // Plain list of everything in the room, for visitors who just want the facts.
 export default function CaseIndex({ onOpen, onClose }: Props) {
-  const firstRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    firstRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialog(dialogRef, onClose);
 
   return (
     <div className={styles.backdrop} onClick={onClose}>
       <div
+        ref={dialogRef}
         className={styles.index}
         role="dialog"
         aria-modal="true"
@@ -38,7 +34,7 @@ export default function CaseIndex({ onOpen, onClose }: Props) {
         <ol className={styles.indexList}>
           {roomObjects.map((o, i) => (
             <li key={o.id}>
-              <button ref={i === 0 ? firstRef : undefined} type="button" onClick={() => onOpen(o.id)}>
+              <button type="button" onClick={() => onOpen(o.id)}>
                 <span className={styles.indexNo}>No. {String(i + 1).padStart(2, '0')}</span>
                 <span className={styles.indexLabel}>{o.label}</span>
                 <span className={styles.indexObject}>{o.object}</span>

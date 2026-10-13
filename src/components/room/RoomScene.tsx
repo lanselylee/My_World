@@ -17,6 +17,8 @@ import styles from './room.module.css';
 const HINT_KEY = 'room-hint-seen';
 const PUPIL_R = 5.5;
 
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const isCaseId = (v: string | null): v is CaseId =>
   !!v && roomObjects.some((o) => o.id === v);
 
@@ -30,16 +32,17 @@ export default function RoomScene() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const objectRefs = useRef<Partial<Record<CaseId, HTMLButtonElement | null>>>({});
   const pupilRefs = useRef<(SVGCircleElement | null)[]>([]);
+  const eyesRef = useRef<SVGSVGElement>(null);
   const pointer = useRef<{ x: number; y: number } | null>(null);
   const frame = useRef(0);
   const pushedRef = useRef(false);
-  const lastOpener = useRef<CaseId | null>(null);
 
   const [touch, setTouch] = useState(false);
   const [lightsOn, setLightsOn] = useState(false);
   const [hot, setHot] = useState<CaseId | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [indexOpen, setIndexOpen] = useState(false);
+  const [edges, setEdges] = useState({ left: false, right: false });
 
   // Touch devices get a lit, horizontally scrollable room instead of the flashlight.
   useEffect(() => {
@@ -53,9 +56,27 @@ export default function RoomScene() {
   useEffect(() => {
     if (!touch || !scrollerRef.current) return;
     const el = scrollerRef.current;
+    const update = () =>
+      setEdges({
+        left: el.scrollLeft > 24,
+        right: el.scrollLeft < el.scrollWidth - el.clientWidth - 24,
+      });
     // Start centred on the portrait and desk.
     el.scrollLeft = (el.scrollWidth - el.clientWidth) * 0.38;
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
   }, [touch]);
+
+  const pan = (dir: -1 | 1) =>
+    scrollerRef.current?.scrollBy({
+      left: dir * window.innerWidth * 0.6,
+      behavior: reducedMotion() ? 'auto' : 'smooth',
+    });
 
   useEffect(() => {
     try {
@@ -72,6 +93,26 @@ export default function RoomScene() {
     } catch {
       /* storage blocked: the hint just shows again next time */
     }
+  }, []);
+
+  // Turn the portrait's pupils towards a point in viewport coordinates.
+  const lookAt = useCallback((x: number, y: number) => {
+    const portrait = objectRefs.current.about;
+    if (!portrait) return;
+    const r = portrait.getBoundingClientRect();
+    const sx = r.width / 766;
+    const sy = r.height / 1000;
+    portraitEyes.forEach((eye, i) => {
+      const pupil = pupilRefs.current[i];
+      if (!pupil) return;
+      const ex = r.left + eye.cx * sx;
+      const ey = r.top + eye.cy * sy;
+      const ang = Math.atan2(y - ey, x - ex);
+      const pull = Math.min(Math.hypot(x - ex, y - ey) / 220, 1);
+      const mx = eye.rx - PUPIL_R - 1;
+      const my = eye.ry - PUPIL_R * 0.55;
+      pupil.style.transform = `translate(${Math.cos(ang) * mx * pull}px, ${Math.sin(ang) * my * pull}px)`;
+    });
   }, []);
 
   // Flashlight, proximity shimmer and portrait eyes, all outside React renders.
@@ -94,25 +135,8 @@ export default function RoomScene() {
       el.toggleAttribute('data-near', Math.hypot(dx, dy) < reach);
     }
 
-    const portrait = objectRefs.current.about;
-    if (portrait) {
-      const r = portrait.getBoundingClientRect();
-      const sx = r.width / 766;
-      const sy = r.height / 1000;
-      portraitEyes.forEach((eye, i) => {
-        const pupil = pupilRefs.current[i];
-        if (!pupil) return;
-        const ex = r.left + eye.cx * sx;
-        const ey = r.top + eye.cy * sy;
-        const ang = Math.atan2(p.y - ey, p.x - ex);
-        const pull = Math.min(Math.hypot(p.x - ex, p.y - ey) / 220, 1);
-        const mx = eye.rx - PUPIL_R - 1;
-        const my = eye.ry - PUPIL_R * 0.55;
-        pupil.setAttribute('cx', `${eye.cx + Math.cos(ang) * mx * pull}`);
-        pupil.setAttribute('cy', `${eye.cy + Math.sin(ang) * my * pull}`);
-      });
-    }
-  }, []);
+    lookAt(p.x, p.y);
+  }, [lookAt]);
 
   const aimAt = useCallback(
     (x: number, y: number) => {
@@ -135,6 +159,41 @@ export default function RoomScene() {
     };
   }, [touch, aimAt]);
 
+  // Without a pointer to follow, the eyes glance around the room on their own.
+  useEffect(() => {
+    if (!touch || reducedMotion()) return;
+    let timer = 0;
+    const glance = () => {
+      const targets = roomObjects.filter((o) => o.id !== 'about');
+      const el = objectRefs.current[targets[Math.floor(Math.random() * targets.length)].id];
+      if (el && Math.random() > 0.25) {
+        const r = el.getBoundingClientRect();
+        lookAt(r.left + r.width / 2, r.top + r.height / 2);
+      } else {
+        lookAt(window.innerWidth / 2, window.innerHeight * 0.9); // back at the visitor
+      }
+      timer = window.setTimeout(glance, 2200 + Math.random() * 2800);
+    };
+    timer = window.setTimeout(glance, 1500);
+    return () => window.clearTimeout(timer);
+  }, [touch, lookAt]);
+
+  useEffect(() => {
+    if (reducedMotion()) return;
+    let timer = 0;
+    const blink = () => {
+      const svg = eyesRef.current;
+      if (svg) {
+        svg.removeAttribute('data-blink');
+        void svg.getBoundingClientRect(); // restart the animation
+        svg.setAttribute('data-blink', '');
+      }
+      timer = window.setTimeout(blink, 3500 + Math.random() * 4500);
+    };
+    timer = window.setTimeout(blink, 3000);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   // Keyboard focus moves the light to the focused object.
   const onFocusObject = (id: CaseId) => {
     setHot(id);
@@ -145,7 +204,6 @@ export default function RoomScene() {
   };
 
   const openCase = (id: CaseId) => {
-    lastOpener.current = id;
     dismissHint();
     setIndexOpen(false);
     pushedRef.current = true;
@@ -159,8 +217,6 @@ export default function RoomScene() {
     } else {
       router.replace('/', { scroll: false });
     }
-    const id = lastOpener.current;
-    if (id) requestAnimationFrame(() => objectRefs.current[id]?.focus({ preventScroll: true }));
   }, [router]);
 
   const lampOn = hot === 'dreams' || openId === 'dreams';
@@ -230,8 +286,20 @@ export default function RoomScene() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={active && o.activeSrc ? o.activeSrc : o.src} alt="" draggable={false} />
                 {o.id === 'about' && (
-                  <svg className={styles.eyes} viewBox="0 0 766 1000" aria-hidden="true">
+                  <svg
+                    ref={eyesRef}
+                    className={styles.eyes}
+                    data-drift={touch || undefined}
+                    viewBox="0 0 766 1000"
+                    aria-hidden="true"
+                  >
                     <defs>
+                      <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stopColor="#8f6b58" />
+                        <stop offset="0.45" stopColor="#b08a74" />
+                        <stop offset="0.72" stopColor="#a9826c" />
+                        <stop offset="0.8" stopColor="#2a1d18" />
+                      </linearGradient>
                       {portraitEyes.map((e, i) => (
                         <clipPath key={i} id={`eye-${i}`}>
                           <ellipse cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} />
@@ -248,6 +316,14 @@ export default function RoomScene() {
                           cy={e.cy + 1}
                           r={PUPIL_R}
                           className={styles.pupil}
+                        />
+                        <rect
+                          className={styles.lid}
+                          x={e.cx - e.rx - 2}
+                          y={e.cy - e.ry - 2}
+                          width={e.rx * 2 + 4}
+                          height={e.ry * 2 + 4}
+                          fill="url(#lid)"
                         />
                       </g>
                     ))}
@@ -295,6 +371,17 @@ export default function RoomScene() {
           ))}
         </div>
       </div>
+
+      {touch && edges.left && (
+        <button type="button" className={styles.pan} data-side="left" onClick={() => pan(-1)} aria-label="Look left">
+          ‹
+        </button>
+      )}
+      {touch && edges.right && (
+        <button type="button" className={styles.pan} data-side="right" onClick={() => pan(1)} aria-label="Look right">
+          ›
+        </button>
+      )}
 
       {showHint && !openId && (
         <aside className={styles.hint} role="note">

@@ -1,6 +1,5 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import ThemeRegistry from './ThemeRegistry';
 import { IM_Fell_English, Special_Elite } from 'next/font/google';
 
 const fell = IM_Fell_English({ weight: '400', subsets: ['latin'], variable: '--font-fell', display: 'swap', adjustFontFallback: false });
@@ -20,11 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fell.variable} ${elite.variable}`}>
-      <body className="antialiased">
-        <ThemeRegistry>
-          {children}
-        </ThemeRegistry>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

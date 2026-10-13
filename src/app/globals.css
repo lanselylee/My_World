@@ -1,38 +1,49 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: #0b0c10;
-    --foreground: #ffffff;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@layer components {
-  .panel {
-    @apply bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl shadow-xl;
-  }
-  
-  .bubble {
-    @apply bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 text-sm font-medium;
-  }
-  
-  .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-medium transition-colors;
-  }
-  
-  .btn-ghost {
-    @apply bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full font-medium transition-colors border border-white/20;
-  }
-  
-  .dot-bg {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-  
-  .grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.1;
-  }
+html,
+body {
+  margin: 0;
+  background: #141a1c;
+  color: #e8dcc0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Full-screen message used by the 404 and error pages. */
+.notice {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  font-family: var(--font-elite), 'Courier New', monospace;
+}
+
+.notice h1 {
+  margin: 0;
+  font-family: var(--font-fell), Georgia, serif;
+  font-weight: 400;
+  font-size: 3rem;
+}
+
+.notice p {
+  margin: 0;
+  color: #b08d57;
+}
+
+.notice a,
+.notice button {
+  font: inherit;
+  color: #e8dcc0;
+  background: none;
+  border: 1px solid #b08d57;
+  padding: 10px 18px;
+  text-decoration: none;
+  cursor: pointer;
 }

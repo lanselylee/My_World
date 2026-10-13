@@ -1,45 +1,19 @@
 'use client';
 
-import { Box, Typography, Button } from '@mui/material';
+import './globals.css';
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <html>
+    <html lang="en">
       <body>
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          textAlign: 'center',
-          p: 4
-        }}>
-          <Typography variant="h3" component="h1" sx={{ mb: 2, color: '#e74c3c' }}>
-            Something went wrong!
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 4, color: '#7f8c8d' }}>
-            {error.message || 'An unexpected error occurred'}
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={reset}
-            sx={{
-              bgcolor: '#3498db',
-              '&:hover': { bgcolor: '#2980b9' }
-            }}
-          >
+        <main className="notice">
+          <h1>The lights went out</h1>
+          <p>Something went wrong while loading the study.</p>
+          <button type="button" onClick={reset}>
             Try again
-          </Button>
-        </Box>
+          </button>
+        </main>
       </body>
     </html>
   );
 }
-
